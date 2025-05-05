@@ -1,0 +1,29 @@
+{
+  "name": "estimasi-usaha-umkm",
+  "version": "1.0.0",
+  "description": "**Estima Usaha UMKM** is a web application that provides business recommendations for beginner entrepreneurs, students, and individuals who want to start a small food or beverage business. The app offers recipe suggestions, ingredient breakdowns, estimated startup and daily costs, potential selling prices, and projected profits.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start-dev": "cross-env NODE_ENV='development' nodemon ./BACK-END/app.js",
+    "start": "cross-env NODE_ENV='production' node ./BACK-END/app.js",
+    "lint": "npx eslint .",
+    "lint:fix": "npx eslint . --fix"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@eslint/css": "^0.7.0",
+    "@eslint/js": "^9.26.0",
+    "cross-env": "^7.0.3",
+    "eslint": "^9.26.0",
+    "globals": "^16.0.0",
+    "nodemon": "^3.1.10"
+  },
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "mongoose": "^8.14.1"
+  }
+}
