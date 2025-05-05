@@ -1,11 +1,17 @@
+import HomePage from './pages/HomePage.js';
+import ResepPage from './pages/ResepPage.js';
+import NotFoundPage from './pages/NotFoundPage.js';
+
 const routes = {
-    home: '<app-home></app-home>',
-    about: '<app-about></app-about>',
-  };
-  
-  export function renderRoute() {
-    const root = document.querySelector('app-root');
-    const hash = location.hash.slice(2) || 'home';
-    root.innerHTML = routes[hash] || '<p>404 - Halaman tidak ditemukan</p>';
-  }
-  
+  '/': HomePage,
+  '/resep': ResepPage,
+};
+
+function navigate() {
+  const path = location.hash.slice(1) || '/';
+  const page = routes[path] || NotFoundPage;
+  document.getElementById('app').innerHTML = page();
+}
+
+window.addEventListener('hashchange', navigate);
+window.addEventListener('load', navigate);

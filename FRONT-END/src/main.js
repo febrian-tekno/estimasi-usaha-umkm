@@ -1,6 +1,3 @@
-import { renderRoute } from './router.js';
-import './components/AppHome.js';
-import './components/AppAbout.js';
-
-window.addEventListener('load', renderRoute);
-window.addEventListener('hashchange', renderRoute);
+import './router.js';
+import './components/ResepCard.js';
+import './components/FilterBar.js';

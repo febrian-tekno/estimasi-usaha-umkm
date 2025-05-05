@@ -3,10 +3,21 @@ import globals from "globals";
 import css from "@eslint/css";
 import { defineConfig } from "eslint/config";
 
-
 export default defineConfig([
-  { files: ["**/*.{js,mjs,cjs}"], plugins: { js }, extends: ["js/recommended"] },
-  { files: ["**/*.js"], languageOptions: { sourceType: "commonjs" } },
-  { files: ["**/*.{js,mjs,cjs}"], languageOptions: { globals: {...globals.browser, ...globals.node} } },
-  { files: ["**/*.css"], plugins: { css }, language: "css/css", extends: ["css/recommended"] },
+  {
+    files: ["**/*.{js,mjs,cjs}"],
+    languageOptions: {
+      sourceType: "module",
+      ecmaVersion: 2020,
+      globals: { ...globals.browser, ...globals.node },
+    },
+    plugins: { js },
+    extends: ["js/recommended"],
+  },
+  {
+    files: ["**/*.css"],
+    plugins: { css },
+    language: "css/css",
+    extends: ["css/recommended"],
+  },
 ]);
