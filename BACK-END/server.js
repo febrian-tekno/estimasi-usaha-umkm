@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const swaggerUi = require('swagger-ui-express');
 const swaggerFile = require('./swagger-output.json');
+const {errorHandler, notFoundPath} = require('./middleware/errorMiddleware');
 require('dotenv').config();
 
 
@@ -34,6 +35,11 @@ app.get('/api/users', (req, res) => {
   res.status(200)
   res.json([{ id: 1, name: 'User1' }, { id: 2, name: 'User2' }]);
 });
+
+// error path Not found
+app.use(notFoundPath);
+// error Handler
+app.use(errorHandler);
 
 // connect mongodb
 async function start() {
