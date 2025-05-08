@@ -11,7 +11,27 @@
     "http"
   ],
   "paths": {
-    "/api/users": {
+    "/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/v1/users": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/resep/nasi-goreng": {
       "get": {
         "description": "",
         "responses": {

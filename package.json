@@ -8,7 +8,8 @@
     "start-dev": "cross-env NODE_ENV='development' nodemon ./BACK-END/app.js",
     "start": "cross-env NODE_ENV='production' node ./BACK-END/app.js",
     "lint": "npx eslint .",
-    "lint:fix": "npx eslint . --fix"
+    "lint:fix": "npx eslint . --fix",
+    "swagger": "node ./BACK-END/swagger"
   },
   "author": "",
   "license": "ISC",
@@ -22,6 +23,8 @@
     "swagger-autogen": "^2.23.7"
   },
   "dependencies": {
+    "axios": "^1.9.0",
+    "cheerio": "^1.0.0",
     "cookie-parser": "^1.4.7",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
