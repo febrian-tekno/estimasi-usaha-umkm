@@ -5,7 +5,7 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const swaggerUi = require('swagger-ui-express');
 const swaggerFile = require('./swagger-output.json');
-const {scrapeResep} = require('./scraper/scrapper');
+const resepRoutes = require('./routes/resep.routes');
 const {errorHandler, notFoundPath} = require('./middleware/errorMiddleware');
 require('dotenv').config();
 
@@ -31,18 +31,8 @@ app.get('/', (req, res) => {
 // Swagger UI
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
-// Contoh API
-app.get('/api/v1/users', (req, res) => {
-  res.status(200)
-  res.json([{ id: 1, name: 'User1' }, { id: 2, name: 'User2' }]);
-});
-
-
-app.get('/api/v1/resep/nasi-goreng', async (req, res) => {
-  res.status(200)
-  const result = await scrapeResep(`https://resepkoki.id/resep/resep-ayam-kecap-goreng-mentega`);
-  res.json({status:'success', data: result});
-});
+//api resep
+app.use('/api/v1/resep',resepRoutes );
 
 // error path Not found
 app.use(notFoundPath);

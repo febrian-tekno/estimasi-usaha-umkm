@@ -21,17 +21,7 @@
         }
       }
     },
-    "/api/v1/users": {
-      "get": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/v1/resep/nasi-goreng": {
+    "/api/v1/resep/resep1": {
       "get": {
         "description": "",
         "responses": {
