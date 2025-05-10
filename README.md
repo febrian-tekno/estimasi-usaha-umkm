@@ -20,7 +20,7 @@
 
 ## Technology Stack
 
-- Frontend: Vanilla JavaScript, Web Components, CSS Grid  
+- Frontend: Vanilla JavaScript, Web Components, Bootstrap
 - Backend: Node.js, Express  
 - Database: MongoDB  
 - (Planned) Integration with external APIs and scraping for real-time pricing

@@ -20,15 +20,6 @@ function getResepIdFromPath() {
   return pathParts[2];
 }
 
-// Fetch data resep dari backend
-async function fetchResepData(resepId) {
-  console.log(typeof(resepId))
-
-  const res = await fetch(`http://localhost:3000/api/v1/resep/resep1`);
-  const json = await res.json();
-  if (json.status !== 'success') throw new Error('Gagal ambil data');
-  return json.data;
-}
 
 // Render halaman resep dengan data dari backend dan data dummy untuk tambahan
 async function renderResepPage(resepId) {

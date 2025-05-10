@@ -5,11 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start-dev": "cross-env NODE_ENV='development' nodemon ./BACK-END/app.js",
-    "start": "cross-env NODE_ENV='production' node ./BACK-END/app.js",
+    "start-dev": "cross-env NODE_ENV='development' nodemon ./app.js",
+    "start": "cross-env NODE_ENV='production' node ./app.js",
     "lint": "npx eslint .",
     "lint:fix": "npx eslint . --fix",
-    "swagger": "node ./BACK-END/swagger"
+    "swagger": "node ./swagger"
   },
   "author": "",
   "license": "ISC",
