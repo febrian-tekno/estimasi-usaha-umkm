@@ -5,8 +5,7 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const swaggerUi = require("swagger-ui-express");
 const swaggerFile = require("./swagger-output.json");
-const resepRoutes = require("./routes/resep.routes");
-const usersRoutes = require("./routes/user.routes");
+const endpointApi = require("./routes/index");
 const { errorHandler, notFoundPath } = require("./middleware/errorMiddleware");
 require("dotenv").config();
 
@@ -32,15 +31,36 @@ app.get("/", (req, res) => {
 // Swagger UI
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
-app.use("/v1/users", usersRoutes);
-
-//api resep
-app.use("/v1/resep", resepRoutes);
+// endpoint api
+app.use("/v1", endpointApi);
 
 // error path Not found
 app.use(notFoundPath);
 // error Handler
 app.use(errorHandler);
+
+// check memory usage every 5 minutes
+setInterval(
+  () => {
+    const usage = process.memoryUsage();
+    const now = new Date();
+    const timestamp = now.toISOString();
+
+    console.log(`\n[MEMORY CHECK - ${timestamp}]`);
+    console.log(`- RSS         : ${(usage.rss / 1024 / 1024).toFixed(2)} MB`);
+    console.log(
+      `- Heap Total  : ${(usage.heapTotal / 1024 / 1024).toFixed(2)} MB`
+    );
+    console.log(
+      `- Heap Used   : ${(usage.heapUsed / 1024 / 1024).toFixed(2)} MB`
+    );
+    console.log(
+      `- External    : ${(usage.external / 1024 / 1024).toFixed(2)} MB`
+    );
+    console.log("-------------------------------------------");
+  },
+  5 * 60 * 1000
+);
 
 // connect mongodb
 async function start() {

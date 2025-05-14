@@ -6,16 +6,18 @@ const User = models.User;
 const { v4: uuidv4 } = require("uuid");
 require("dotenv").config();
 
-// example: https://yourapp.com/verify-email?action=verify&key=<TOKEN>&login=<EMAIL>
+// example: https://api.yourapp.com/auth/verify-email?action=verify&key=<TOKEN>&login=<EMAIL>
 
 const emailHost = process.env.EMAIL;
 const emailPass = process.env.EMAIL_PASS;
 const host =
-  process.env.NODE_ENV === "production" ? process.env.HOST : "api.localhost";
+  process.env.NODE_ENV === "production"
+    ? process.env.HOST
+    : "http://api.localhost";
 const port = process.env.NODE_ENV === "production" ? process.env.PORT : 3000;
 
 const generateLinkVerification = (token, email) => {
-  return `${host}:${port}/auth/verify-email?action=verify&key=${token}&login=${encodeURIComponent(email)}`;
+  return `${host}:${port}/v1/auth/verify-email?action=verify&key=${token}&login=${encodeURIComponent(email)}`;
 };
 
 // Konfigurasi transporter email (Nodemailer)
@@ -61,7 +63,7 @@ const verificationRegistEmail = async (email, username) => {
 
 const generateToken = async (email) => {
   const token = uuidv4();
-  const tokenExpires = new Date(Date.now() + 15 * 60 * 1000); // expired 15 menit
+  const tokenExpires = new Date(Date.now() + 24 * 60 * 60 * 1000); // expired dalam 24 jam
   const user = await User.findOne({ email });
   if (!user) throw new Error("User not found");
 

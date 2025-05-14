@@ -1,13 +1,13 @@
 const swaggerAutogen = require("swagger-autogen")();
 const outputFile = "./swagger-output.json";
-const endpointsFiles = ["./server.js", "./routes/*.js"];
+const endpointsFiles = ["./server.js"];
 
 const doc = {
   info: {
     title: "JualApa API",
     description: "Dokumentasi API",
   },
-  host: "localhost:3000",
+  host: "api.localhost:3000",
   schemes: ["http"],
 };
 

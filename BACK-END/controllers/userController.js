@@ -1,7 +1,7 @@
 const asyncHandler = require("../middleware/asyncHandler");
 const models = require("../models/index");
-const { verificationRegistEmail } = require("../services/verificationEmail");
 const User = models.User;
+const { verificationRegistEmail } = require("../services/verificationEmail");
 
 // POST register {username, email, password}
 const registerUser = asyncHandler(async (req, res) => {

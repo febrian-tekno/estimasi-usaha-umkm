@@ -5,7 +5,7 @@
     "description": "Dokumentasi API",
     "version": "1.0.0"
   },
-  "host": "localhost:3000",
+  "host": "api.localhost:3000",
   "basePath": "/",
   "schemes": [
     "http"
@@ -17,40 +17,6 @@
         "responses": {
           "default": {
             "description": ""
-          }
-        }
-      },
-      "post": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "username": {
-                  "example": "any"
-                },
-                "email": {
-                  "example": "any"
-                },
-                "password": {
-                  "example": "any"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Created"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "500": {
-            "description": "Internal Server Error"
           }
         }
       }
@@ -91,17 +57,29 @@
         }
       }
     },
-    "/v1/resep/resep1": {
+    "/v1/auth/verify-email": {
       "get": {
         "description": "",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "type": "string"
+          }
+        ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "default": {
+            "description": ""
           }
         }
       }
     },
-    "/resep1": {
+    "/v1/resep/resep1": {
       "get": {
         "description": "",
         "responses": {
