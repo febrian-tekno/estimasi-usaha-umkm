@@ -1,6 +1,6 @@
 const asyncHandler = require("../middleware/asyncHandler");
 const Resep = require("../models/Resep");
-const { scrapeResep } = require("../services/scraper/scrapper");
+const { scrapeResep } = require("../services/scrapper");
 const logger = require("../utils/logger");
 
 const getResepHandler = asyncHandler(async (req, res) => {

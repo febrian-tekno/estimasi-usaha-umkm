@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JualApa - {{action}}</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+        color: #333;
+      }
+      .email-container {
+        max-width: 600px;
+        margin: 40px auto;
+        background-color: #ffffff;
+        padding: 30px;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+      }
+      .banner {
+        background-color: #007bff;
+        color: white;
+        text-align: center;
+        padding: 15px;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        font-size: 18px;
+        font-weight: bold;
+      }
+      h2 {
+        color: #333333;
+      }
+      .button {
+        display: inline-block;
+        padding: 12px 24px;
+        background-color: green;
+        color: #ffffff;
+        text-decoration: none;
+        border-radius: 5px;
+        margin: 20px 0;
+      }
+      .raw-link {
+        word-break: break-word;
+        font-size: 14px;
+        margin-top: 10px;
+        color: #555;
+      }
+      .info-text {
+        font-size: 14px;
+        margin-top: 20px;
+        color: #444;
+      }
+      .terms-link {
+        color: #007bff;
+        text-decoration: none;
+      }
+      .footer {
+        margin-top: 30px;
+        font-size: 12px;
+        color: #777777;
+        text-align: center;
+        border-top: 1px solid #e0e0e0;
+        padding-top: 15px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="email-container">
+      <div class="banner">JualApa - {{action}}</div>
+
+      <h2>Halo {{username}},</h2>
+      <p>
+        Kami menerima permintaan untuk melakukan
+        <strong>{{action}}</strong> pada akun Anda di <strong>JualApa</strong>.
+      </p>
+      <p>Silakan klik tombol di bawah ini untuk melanjutkan:</p>
+
+      <div style="text-align: center">
+        <a href="{{link}}" class="button">Lanjutkan</a>
+      </div>
+
+      <p class="raw-link">
+        Jika tombol di atas tidak dapat diklik, salin dan tempel tautan berikut
+        ke browser Anda:
+      </p>
+      <p class="raw-link">{{link}}</p>
+
+      <p class="info-text">
+        Jika Anda tidak merasa melakukan permintaan ini, harap abaikan email
+        ini. Kami menjaga keamanan data Anda dengan sangat serius.
+      </p>
+
+      <p class="info-text">
+        Jika Anda mengalami masalah atau memiliki pertanyaan, silakan hubungi
+        kami di:
+        <a href="mailto:support.jualapa@gmail.com">support.jualapa@gmail.com</a>
+      </p>
+
+      <div class="footer">
+        <p>
+          Dengan melanjutkan, Anda menyetujui
+          <a href="{{termsOfServiceLink}}" class="terms-link" target="_blank"
+            >Syarat dan Ketentuan</a
+          >
+          serta
+          <a href="{{privacyPolicyLink}}" class="terms-link" target="_blank"
+            >Kebijakan Privasi</a
+          >
+          kami.
+        </p>
+        <p>Terima kasih,<br />Tim JualApa</p>
+      </div>
+    </div>
+  </body>
+</html>
