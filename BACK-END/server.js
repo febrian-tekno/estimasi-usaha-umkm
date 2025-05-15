@@ -1,21 +1,32 @@
-const express = require("express");
+const express = require('express');
 const app = express();
-const mongoose = require("mongoose");
-const cookieParser = require("cookie-parser");
-const cors = require("cors");
-const swaggerUi = require("swagger-ui-express");
-const swaggerFile = require("./swagger-output.json");
-const endpointApi = require("./routes/index");
-const { errorHandler, notFoundPath } = require("./middleware/errorMiddleware");
-require("dotenv").config();
+const mongoose = require('mongoose');
+const cookieParser = require('cookie-parser');
+const cors = require('cors');
+const swaggerUi = require('swagger-ui-express');
+const swaggerFile = require('./swagger-output.json');
+const endpointApi = require('./routes/index');
+const { errorHandler, notFoundPath } = require('./middleware/errorMiddleware');
+require('dotenv').config();
 
 // host dan port
-const host =
-  process.env.NODE_ENV === "production" ? process.env.HOST : "api.localhost";
-const port = process.env.NODE_ENV === "production" ? process.env.PORT : 3000;
+const host = process.env.NODE_ENV === 'production' ? process.env.HOST : 'api.localhost';
+const port = process.env.NODE_ENV === 'production' ? process.env.PORT : 3000;
 
-// mengijinkan semua cors
-app.use(cors());
+const allowedOrigins = ['http://localhost:3000', 'http://api.localhost:3000'];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true,
+  })
+);
 
 // middleware parsing body request
 app.use(express.json());
@@ -24,15 +35,21 @@ app.use(express.urlencoded({ extended: true }));
 // cookies
 app.use(cookieParser());
 
-app.get("/", (req, res) => {
-  res.redirect("/api-docs");
+app.get('/', (req, res) => {
+  res.redirect('/api-docs');
 });
 
-// Swagger UI
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile, {
+  swaggerOptions: {
+    requestInterceptor: (req) => {
+      req.credentials = 'include';
+      return req;
+    },
+  },
+}));
 
 // endpoint api
-app.use("/v1", endpointApi);
+app.use('/v1', endpointApi);
 
 // error path Not found
 app.use(notFoundPath);
@@ -48,16 +65,10 @@ setInterval(
 
     console.log(`\n[MEMORY CHECK - ${timestamp}]`);
     console.log(`- RSS         : ${(usage.rss / 1024 / 1024).toFixed(2)} MB`);
-    console.log(
-      `- Heap Total  : ${(usage.heapTotal / 1024 / 1024).toFixed(2)} MB`
-    );
-    console.log(
-      `- Heap Used   : ${(usage.heapUsed / 1024 / 1024).toFixed(2)} MB`
-    );
-    console.log(
-      `- External    : ${(usage.external / 1024 / 1024).toFixed(2)} MB`
-    );
-    console.log("-------------------------------------------");
+    console.log(`- Heap Total  : ${(usage.heapTotal / 1024 / 1024).toFixed(2)} MB`);
+    console.log(`- Heap Used   : ${(usage.heapUsed / 1024 / 1024).toFixed(2)} MB`);
+    console.log(`- External    : ${(usage.external / 1024 / 1024).toFixed(2)} MB`);
+    console.log('-------------------------------------------');
   },
   5 * 60 * 1000
 );
@@ -66,7 +77,7 @@ setInterval(
 async function start() {
   try {
     await mongoose.connect(process.env.DATABASE);
-    console.log("berhasil terhubung ke database..");
+    console.log('berhasil terhubung ke database..');
   } catch (error) {
     console.log(`gagal terhubung ke databse : ${error.message}`);
   }

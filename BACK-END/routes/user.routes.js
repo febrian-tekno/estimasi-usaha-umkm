@@ -1,32 +1,29 @@
-const express = require("express");
-const { registerUser } = require("../controllers/userController");
+const express = require('express');
+const { registerUser, currentUser, getAllUserHandler, deleteUserById, 
+    getUserById, updatePasswordHandler,
+    updateUserProfile,} = require('../controllers/userController');
+const { protectedMiddleware, isAdmin, protectedUser } = require('../middleware/authMiddleware');
 const router = express.Router();
 
-// Register a new user
-router.post("/", registerUser);
+/// Register a new user (public access, no authentication needed)
+router.post('/', registerUser);
 
-// // previlege admin ambil data all user
-// router.get("/", protectedMiddleware, isAdmin, allUser);
+// Admin: get all users (protected route, admin role required)
+router.get('/', protectedMiddleware, isAdmin, getAllUserHandler);
 
-// // get data user login atau tidak
-// router.get("/me", protectedMiddleware, currentUser);
+// Get current logged-in user's info (protected route, any authenticated user)
+router.get('/me', protectedMiddleware, currentUser);
 
-// // get user berdasarkan id
-// router.get("/:id", protectedMiddleware, protectedUser, getUserById);
+// Update password for a user (protected route, accessible by the user themself or admin)
+router.put('/:id/password', protectedMiddleware, protectedUser, updatePasswordHandler);
 
-// // end points update password {oldPassword, newPassword}
-// router.put(
-//   "/:id/password",
-//   protectedMiddleware,
-//   protectedUser,
-//   updatePasswordHandler
-// ),
-//   // end points delete user by id
-//   router.delete(
-//     "/:id",
-//     protectedMiddleware,
-//     protectedUser,
-//     deleteUserByIdHandler
-//   );
+// Get user by ID (protected route, accessible by the user themself or admin)
+router.get('/:id', protectedMiddleware, protectedUser, getUserById);
+
+// Update user profile (protected route, accessible by the user themself or admin)
+router.put('/:id', protectedMiddleware, protectedUser, updateUserProfile);
+
+// Delete user by ID (protected route, accessible by the user themself or admin)
+router.delete('/:id', protectedMiddleware, protectedUser, deleteUserById);
 
 module.exports = router;

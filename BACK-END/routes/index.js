@@ -9,6 +9,6 @@ router.use("/users", userRoutes);
 // endpoint auth
 router.use("/auth", authRoutes);
 //endpoint resep
-router.use("/resep", resepRoutes);
+router.use("/reseps", resepRoutes);
 
 module.exports = router;
