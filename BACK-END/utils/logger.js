@@ -11,11 +11,11 @@ const logger = createLogger({
   ),
   transports: [
     new transports.File({ filename: "logs/error.log" }),
-    new transports.MongoDB({
-      db: process.env.DATABASE,
-      collection: "error_logs",
-      tryReconnect: true,
-    }),
+    // new transports.MongoDB({
+    //   db: process.env.DATABASE,
+    //   collection: "error_logs",
+    //   tryReconnect: true,
+    // }),
     new transports.Console({ format: format.simple() }),
   ],
 });

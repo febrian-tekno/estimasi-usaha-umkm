@@ -1,85 +1,46 @@
 const asyncHandler = require('../middleware/asyncHandler');
 const models = require('../models/index');
 const User = models.User;
-const jwt = require('jsonwebtoken');
+const axios = require('axios');
+const createResToken = require('../services/authService');
+const { sendLinkResetPassword } = require('../services/emailService');
 require('dotenv').config();
-
-// FUNCTION create token jwt berdasarkan id
-const signToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: '14d',
-    algorithm: 'HS256',
-  });
-};
-
-// function create cookie jwt
-const createResToken = (user) => {
-  try {
-    const token = signToken(user._id);
-    if (!token) {
-      throw new Error('Token tidak dibuat!');
-    }
-
-    const cookieOption = {
-      expires: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000), // 14 hari
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'None',
-    };
-    const cookie = { name: 'session', token, cookieOption };
-    return cookie;
-  } catch (error) {
-    console.error('❌ Error saat membuat token atau mengatur cookie:', error.message);
-    throw new Error('internal server error gagal membuat token atau mengatur cookie');
-  }
-};
 
 const verifyEmailRegist = asyncHandler(async (req, res) => {
   const frontEndUrl = process.env.FRONT_END_URL;
-  const token = req.query.key;
-  const email = req.query.login;
+  const token = req.query.token;
   let status = 'failed';
   let message = '';
 
-  if (!token || !email) {
-    message = 'token atau email tidak ditemukan';
-    console.log('Error: Token atau email tidak ditemukan');
+  if (!token) {
+    message = 'Token tidak ditemukan';
   } else {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ token_verify: token });
 
-    if (!user) {
-      message = 'user tidak ditemukan';
-    } else {
-      if (user.token_verify === token && user.token_expires > Date.now()) {
-        await User.updateOne(
-          { email },
-          {
-            $set: { is_verified: true },
-            $unset: { token_verify: '', token_expires: '' },
-          }
-        );
+    if (user) {
+      if (user.token_expires > Date.now()) {
+        user.is_verified = true;
+        user.token_verify = undefined;
+        user.token_expires = undefined;
 
+        await user.save();
         status = 'success';
-        message = 'email berhasil di verifikasi';
-        console.log('Success: Email berhasil diverifikasi');
+        message = 'Email berhasil diverifikasi';
       } else {
-        message = 'link kadaluarsa atau salah';
-        console.log('Error: Link kadaluarsa atau salah');
+        message = 'Link kadaluarsa atau salah';
       }
+    } else {
+      message = 'Token tidak valid';
     }
   }
-
-  const redirectUrl = `${frontEndUrl}/email-verified?status=${status}&message=${encodeURIComponent(message)}`;
-  console.log('Redirecting to:', redirectUrl);
-
+  const redirectUrl = `${frontEndUrl}/auth/email-verified?status=${status}&message=${encodeURIComponent(message)}`;
   res.redirect(redirectUrl);
 });
 
-const createSession = asyncHandler(async (req, res) => {
+const createSession = asyncHandler(async (req, res, next) => {
   try {
     const email = req.body.email;
     const password = req.body.password;
-    console.log(`email: ${email} password: ${password}`);
 
     if (!email || !password) {
       return res.status(400).json({ status: 'failed', message: 'Email dan password harus diisi' });
@@ -115,18 +76,13 @@ const createSession = asyncHandler(async (req, res) => {
     const cookie = createResToken(userData);
     res.cookie(cookie.name, cookie.token, cookie.cookieOption);
 
-    console.log(`${userData.username} berhasil login.`);
     res.json({ status: 'success', message: 'Berhasil login' });
   } catch (err) {
-    res.status(500).json({
-      status: 'failed',
-      message: 'internal server error',
-      error: err.message,
-    });
+    next(err);
   }
 });
 
-const deleteSession = asyncHandler(async (req, res) => {
+const deleteSession = asyncHandler(async (req, res, next) => {
   try {
     res.cookie('session', '', {
       httpOnly: true,
@@ -134,18 +90,128 @@ const deleteSession = asyncHandler(async (req, res) => {
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'None',
     });
-    console.log('log out dijalankan');
     res.status(200).json({
       status: 'success',
       message: 'Logout berhasil',
     });
-  } catch (error) {
-    console.log(`gagal logout ${error.message}`);
-    res.status(500).json({
-      status: 'failed',
-      message: 'Terjadi kesalahan saat logout',
-      error: error.message,
-    });
+  } catch (err) {
+    next(err);
   }
 });
-module.exports = { verifyEmailRegist, createSession, deleteSession };
+
+/// GOOGLE OAUTH
+
+const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+const CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
+const REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI;
+
+const InitiatesGoogleFlow = (req, res) => {
+  const url = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=profile email`;
+  res.redirect(url);
+};
+
+const googleCallbackHandler = asyncHandler(async (req, res) => {
+  const { code } = req.query;
+  const urlFrontEnd = process.env.FRONT_END_URL;
+
+  let status = 'failed';
+  let message = '';
+
+  try {
+    if (!code) throw new Error('Kode otorisasi tidak ditemukan');
+    if (!urlFrontEnd) throw new Error('Configuration error: FRONT_END_URL is not defined');
+
+    const { data: tokenData } = await axios.post('https://oauth2.googleapis.com/token', {
+      client_id: CLIENT_ID,
+      client_secret: CLIENT_SECRET,
+      code,
+      redirect_uri: REDIRECT_URI,
+      grant_type: 'authorization_code',
+    });
+
+    const { access_token } = tokenData;
+
+    const { data: profile } = await axios.get('https://www.googleapis.com/oauth2/v1/userinfo', {
+      headers: { Authorization: `Bearer ${access_token}` },
+    });
+
+    let userData = await User.findOne({ email: profile.email });
+
+    // Kalau user sudah ada tapi bukan dari Google OAuth, langsung tolak
+    if (userData && !userData.is_oauth) {
+      throw new Error('Akun ini tidak menggunakan metode login Google');
+    }
+
+    // Buat userData baru kalau belum ada
+    if (!userData) {
+      userData = await userData.create({
+        username: profile.name,
+        email: profile.email,
+        is_verified: profile.verified_email,
+        is_oauth: true,
+        picture: profile.picture,
+      });
+    }
+
+    // Set cookie token
+    const cookie = createResToken(userData);
+    res.cookie(cookie.name, cookie.token, cookie.cookieOption);
+
+    status = 'success';
+    message = 'Berhasil login';
+  } catch (err) {
+    message = err.message || 'Terjadi kesalahan saat login menggunakan Google';
+  }
+
+  const redirectUrl = `${urlFrontEnd}/auth/login?provider=google&status=${status}&message=${encodeURIComponent(message)}`;
+  res.redirect(redirectUrl);
+});
+
+const resetPasswordRequest = asyncHandler(async (req, res, next) => {
+  const email = req.body.email;
+  if (!email) return res.status(400).json({ status: 'failed', message: 'email wajib diisi' });
+  try {
+    const userData = await User.findOne({ email });
+    if (!userData || !userData.is_verified)
+      return res.status(404).json({ status: 'failed', message: 'user not found' });
+
+    await sendLinkResetPassword(email, userData.username);
+    return res.status(200).json({ status: 'success', message: 'link reset password telah dikirim ke email' });
+  } catch (err) {
+    next(err);
+  }
+});
+
+const confirmResetAndUpdatePassword = asyncHandler(async (req, res, next) => {
+  const token = req.body.token;
+  const newPassword = req.body.newPassword;
+  if (!token || !newPassword)
+    return res.status(400).json({ status: 'failed', message: 'token atau password baru harus di isi' });
+
+  try {
+    const userData = await User.findOne({ token_verify: token });
+
+    if (!userData || userData.token_expires < Date.now()) {
+      return res.status(401).json({ status: 'failed', message: 'link salah atau kadaluarsa' });
+    } else {
+      userData.password = newPassword;
+      userData.token_verify = undefined;
+      userData.token_expires = undefined;
+      await userData.save();
+
+      return res.status(200).json({ status: 'success', message: 'password berhasil di ganti' });
+    }
+  } catch (err) {
+    next(err);
+  }
+});
+
+module.exports = {
+  verifyEmailRegist,
+  createSession,
+  deleteSession,
+  InitiatesGoogleFlow,
+  googleCallbackHandler,
+  resetPasswordRequest,
+  confirmResetAndUpdatePassword,
+};

@@ -36,7 +36,7 @@
       .button {
         display: inline-block;
         padding: 12px 24px;
-        background-color: green;
+        background-color: yellow;
         color: #ffffff;
         text-decoration: none;
         border-radius: 5px;
@@ -82,34 +82,26 @@
         <a href="{{link}}" class="button">Lanjutkan</a>
       </div>
 
-      <p class="raw-link">
-        Jika tombol di atas tidak dapat diklik, salin dan tempel tautan berikut
-        ke browser Anda:
-      </p>
+      <p class="raw-link">Jika tombol di atas tidak dapat diklik, salin dan tempel tautan berikut ke browser Anda:</p>
       <p class="raw-link">{{link}}</p>
-      <p class="info-text">link tersebut akan kadaluarsa dalam 24 jam</p>
+      <p class="info-text">link tersebut akan kadaluarsa dalam {{expiresAt}}</p>
 
       <p class="info-text">
-        Jika Anda tidak merasa melakukan permintaan ini, harap abaikan email
-        ini. Kami menjaga keamanan data Anda dengan sangat serius.
+        Jika Anda tidak merasa melakukan permintaan ini, harap abaikan email ini. Kami menjaga keamanan data Anda dengan
+        sangat serius.
       </p>
 
       <p class="info-text">
-        Jika Anda mengalami masalah atau memiliki pertanyaan, silakan hubungi
-        kami di:
+        Jika Anda mengalami masalah atau memiliki pertanyaan, silakan hubungi kami di:
         <a href="mailto:support.jualapa@gmail.com">support.jualapa@gmail.com</a>
       </p>
 
       <div class="footer">
         <p>
           Dengan melanjutkan, Anda menyetujui
-          <a href="{{termsOfServiceLink}}" class="terms-link" target="_blank"
-            >Syarat dan Ketentuan</a
-          >
+          <a href="{{termsOfServiceLink}}" class="terms-link" target="_blank">Syarat dan Ketentuan</a>
           serta
-          <a href="{{privacyPolicyLink}}" class="terms-link" target="_blank"
-            >Kebijakan Privasi</a
-          >
+          <a href="{{privacyPolicyLink}}" class="terms-link" target="_blank">Kebijakan Privasi</a>
           kami.
         </p>
         <p>Terima kasih,<br />Tim JualApa</p>

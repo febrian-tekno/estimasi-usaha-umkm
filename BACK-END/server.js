@@ -6,11 +6,11 @@ const cors = require('cors');
 const swaggerUi = require('swagger-ui-express');
 const swaggerFile = require('./swagger-output.json');
 const endpointApi = require('./routes/index');
-const { errorHandler, notFoundPath } = require('./middleware/errorMiddleware');
+const { errorHandler, notFoundPath } = require('./middleware/errorHandler');
 require('dotenv').config();
 
-// host dan port
-const host = process.env.NODE_ENV === 'production' ? process.env.HOST : 'api.localhost';
+// host dan  port
+const host = process.env.NODE_ENV === 'production' ? process.env.HOST : 'localhost';
 const port = process.env.NODE_ENV === 'production' ? process.env.PORT : 3000;
 
 const allowedOrigins = ['http://localhost:3000', 'http://api.localhost:3000'];
@@ -39,17 +39,21 @@ app.get('/', (req, res) => {
   res.redirect('/api-docs');
 });
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile, {
-  swaggerOptions: {
-    requestInterceptor: (req) => {
-      req.credentials = 'include';
-      return req;
+app.use(
+  '/api-docs',
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerFile, {
+    swaggerOptions: {
+      requestInterceptor: (req) => {
+        req.credentials = 'include';
+        return req;
+      },
     },
-  },
-}));
+  })
+);
 
 // endpoint api
-app.use('/v1', endpointApi);
+app.use('/api/v1', endpointApi);
 
 // error path Not found
 app.use(notFoundPath);

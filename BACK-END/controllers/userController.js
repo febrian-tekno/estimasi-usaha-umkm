@@ -1,10 +1,10 @@
 const asyncHandler = require('../middleware/asyncHandler');
 const models = require('../models/index');
 const User = models.User;
-const { verificationRegistEmail } = require('../services/verificationEmail');
+const { verificationRegistEmail } = require('../services/emailService');
 
 // POST register {username, email, password}
-const registerUser = asyncHandler(async (req, res) => {
+const registerUser = asyncHandler(async (req, res, next) => {
   const { username, email, password } = req.body;
 
   if (!username || !email || !password) {
@@ -45,28 +45,25 @@ const registerUser = asyncHandler(async (req, res) => {
       message: 'User created, please verify your email',
       data: { email },
     });
-  } catch (error) {
-    return res.status(500).json({
-      status: 'failed',
-      message: 'Gagal mengirim verifikasi email, coba lagi nanti',
-      error: error.message,
-    });
+  } catch (err) {
+    next(err);
   }
 });
 
-const currentUser = asyncHandler(async (req, res) => {
-  // mengambil data user
-  const user = await User.findById(req.user._id).select('_id username email picture');
-  console.log(user);
-
-  if (user) {
-    res.status(200).json({
-      status: 'success',
-      message: 'berhasil mendapat data user',
-      data: user,
-    });
-  } else {
-    res.status(401).json({ status: 'failed', message: 'user not found' });
+const currentUser = asyncHandler(async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user._id).select('_id username email picture');
+    if (user) {
+      res.status(200).json({
+        status: 'success',
+        message: 'berhasil mendapat data user',
+        data: user,
+      });
+    } else {
+      res.status(401).json({ status: 'failed', message: 'user not found' });
+    }
+  } catch (err) {
+    next(err);
   }
 });
 
@@ -103,7 +100,7 @@ const getAllUserHandler = asyncHandler(async (req, res) => {
   });
 });
 
-const getUserById = asyncHandler(async (req, res) => {
+const getUserById = asyncHandler(async (req, res, next) => {
   try {
     const userId = req.params.id;
     const user = await User.findById(userId).select('-password');
@@ -114,12 +111,11 @@ const getUserById = asyncHandler(async (req, res) => {
 
     res.json({ status: 'success', message: 'data user berhasil diambil', data: user });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ status: 'failed', message: 'Terjadi kesalahan server', error: err.message });
+    next(err);
   }
 });
 
-const deleteUserById = asyncHandler(async (req, res) => {
+const deleteUserById = asyncHandler(async (req, res, next) => {
   try {
     const userId = req.params.id;
 
@@ -152,20 +148,14 @@ const deleteUserById = asyncHandler(async (req, res) => {
       status: 'success',
       message: `User ${user.name} berhasil dihapus`,
     });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({
-      status: 'failed',
-      message: 'Internal server error Terjadi kesalahan',
-      error: error.message,
-    });
+  } catch (err) {
+    next(err);
   }
 });
 
-const updatePasswordHandler = asyncHandler(async (req, res) => {
+const updatePasswordHandler = asyncHandler(async (req, res, next) => {
   try {
     const id = req.user._id;
-    console.log('id : ' + id);
     const { oldPassword, newPassword } = req.body;
 
     // cari user berdasarkan id
@@ -187,12 +177,11 @@ const updatePasswordHandler = asyncHandler(async (req, res) => {
 
     res.status(200).json({ status: 'success', message: 'Password berhasil diperbarui' });
   } catch (err) {
-    console.error(err.message);
-    res.status(500).json({ status: 'failed', message: 'Terjadi kesalahan', error: err.message });
+    next(err);
   }
 });
 
-const updateUserProfile = asyncHandler(async (req, res) => {
+const updateUserProfile = asyncHandler(async (req, res, next) => {
   try {
     const { username, bio } = req.body;
     const userId = req.user._id;
@@ -216,7 +205,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 
     res.json({ status: 'success', message: 'Profil berhasil diperbarui', data: updatedUser });
   } catch (err) {
-    res.status(500).json({ status: 'failed', message: 'Internal server error', error: err.message });
+    next(err);
   }
 });
 

@@ -1,38 +1,18 @@
 const asyncHandler = require("../middleware/asyncHandler");
-const Resep = require("../models/Resep");
-const { scrapeResep } = require("../services/scrapper");
-const logger = require("../utils/logger");
+// const Resep = require("../models/Resep");
+// const { scrapeResep } = require("../services/scrapper");
 
-const getResepHandler = asyncHandler(async (req, res) => {
-  const title = "resep-ayam-kecap-goreng-mentereng";
+const getResepHandler = asyncHandler(async (req, res, next) => {
   try {
-    let resep = await Resep.findOne({ title });
-    if (resep) {
-      console.log("database save running");
-      return res.status(200).json({ status: "success", data: resep });
+   const test = false
+    if (!test) {
+      throw createError(500, `internal server error`);
     }
 
-    const result = await scrapeResep(`https://resepkoki.id/resep/${title}`);
-    if (!result) {
-      throw createError(404, `Resep not found: ${title}`);
-    }
-
-    resep = new Resep(result);
-    await resep.save();
-    res.status(200).json({ status: "success", data: resep });
+    // resep = new Resep(result);
+    res.status(200).json({ status: "success", });
   } catch (err) {
-    logger.error(`Error fetching recipe: ${err.message}`, {
-      stack: err.stack,
-      method: req.method,
-      url: req.url,
-    });
-    const status = err.statusCode || 500;
-    const message = err.message || "Internal Server Error";
-
-    res.status(status).json({
-      status: "error",
-      message,
-    });
+    next(err);
   }
 });
 
