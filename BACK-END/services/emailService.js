@@ -9,10 +9,9 @@ require('dotenv').config();
 const emailSender = process.env.EMAIL;
 const emailPass = process.env.EMAIL_PASS;
 const frontendUrl = process.env.FRONT_END_URL;
-const backendUrl = process.env.API_BASE_URL;
 
 // Generate verification link
-const generateLinkVerification = (token) => `${backendUrl}/api/v1/auth/verify-email?token=${token}`;
+const generateLinkVerification = (token) => `${frontendUrl}/auth/email-verify?token=${token}`;
 
 // Generate reset password link
 const generateLinkResetPassword = (token) => `${frontendUrl}/auth/reset-password?token=${token}`;

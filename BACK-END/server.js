@@ -12,8 +12,8 @@ require('dotenv').config();
 // host dan  port
 const host = process.env.NODE_ENV === 'production' ? process.env.HOST : 'localhost';
 const port = process.env.NODE_ENV === 'production' ? process.env.PORT : 3000;
-
-const allowedOrigins = ['http://localhost:3000', 'http://api.localhost:3000'];
+const baseUrlFE = process.env.FRONT_END_URL;
+const allowedOrigins = ['http://localhost:3000', 'http://api.localhost:3000', baseUrlFE];
 
 app.use(
   cors({

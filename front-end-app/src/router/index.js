@@ -1,17 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import notFoundRoutes from './notfound';
+import notFoundRoutes from './notfound.routes';
 import HomePage from '../views/HomePage.vue';
-import SignInPage from '../views/LoginPage.vue';
+import authRoutes from './auth.routes';
 
 const routes = [
   {
     path: '/',
     component: HomePage,
   },
-  {
-    path: '/login',
-    component: SignInPage,
-  },
+  ...authRoutes,
   ...notFoundRoutes,
 ];
 
