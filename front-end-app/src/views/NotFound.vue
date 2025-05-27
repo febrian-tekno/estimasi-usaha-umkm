@@ -4,9 +4,11 @@
         <h1>404 - Halaman Tidak Ditemukan</h1>
         <p>Kayaknya kamu nyasar, nih 🧭</p>
     </div>
+    <FooterApp></FooterApp>
 </template>
 
 <script setup>
 import AppBar from '../components/AppBar.vue';
+import FooterApp from '../components/FooterApp.vue';
 
 </script>

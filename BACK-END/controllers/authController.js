@@ -268,6 +268,27 @@ const confirmResetAndUpdatePassword = asyncHandler(async (req, res, next) => {
   }
 });
 
+const validateTokenResetPassword = asyncHandler( async (req, res, next) => {
+   if (!req.body) {
+    return res.status(400).json({ status: 'failed', message: 'Request body kosong' });
+  }
+  const token = req.body.token;
+  if (!token )
+    return res.status(400).json({ status: 'failed', message: 'token harus di isi' });
+
+  try {
+    const userData = await User.findOne({ token_verify: token });
+
+    if (!userData || userData.token_expires < Date.now()) {
+      return res.status(401).json({ status: 'failed', message: 'link salah atau kadaluarsa' });
+    } else {
+      return res.status(200).json({ status: 'success', message: 'berhasil validasi token, anda dapat mebuat password baru sekarang' });
+    }
+  } catch (err) {
+    next(err);
+  }
+})
+
 module.exports = {
   verifyEmailRegist,
   createSession,
@@ -276,5 +297,6 @@ module.exports = {
   googleCallbackHandler,
   resetPasswordRequest,
   confirmResetAndUpdatePassword,
+  validateTokenResetPassword,
   resendEmailVerification,
 };

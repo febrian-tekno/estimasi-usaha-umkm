@@ -94,6 +94,7 @@
       </div>
     </div>
   </div>
+  <FooterApp></FooterApp>
 </template>
 
 <script setup>
@@ -104,6 +105,7 @@ import Swal from 'sweetalert2';
 
 import AppBar from '../../components/AppBar.vue';
 import AppButton from '../../components/AppButton.vue';
+import FooterApp from '../../components/FooterApp.vue';
 import IndikatorLoading from '../../components/IndikatorLoading.vue';
 import EmailForm from '../../components/child/EmailForm.vue'
 import StatusResult from '../../components/StatusResult.vue';

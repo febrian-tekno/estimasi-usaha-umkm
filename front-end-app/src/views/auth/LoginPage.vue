@@ -64,6 +64,7 @@
       </div>
     </div>
   </div>
+  <FooterApp></FooterApp>
 </template>
 
 <script setup>
@@ -75,6 +76,7 @@ import AppLogo from '../../components/AppLogo.vue';
 import AppBar from '../../components/AppBar.vue';
 import AppButton from '../../components/AppButton.vue';
 import GoogleAuthButton from '../../components/GoogleAuthButton.vue';
+import FooterApp from '../../components/FooterApp.vue';
 import SideBanner from '../../components/SideBanner.vue';
 import Swal from 'sweetalert2';
 

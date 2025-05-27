@@ -8,6 +8,7 @@ const {
   resetPasswordRequest,
   confirmResetAndUpdatePassword,
   resendEmailVerification,
+  validateTokenResetPassword,
 } = require('../controllers/authController');
 const { protectedMiddleware } = require('../middleware/authMiddleware');
 const router = express.Router();
@@ -32,7 +33,10 @@ router.get('/google/callback', googleCallbackHandler);
 // request link reset password
 router.post('/reset-password', resetPasswordRequest);
 
-// reset password dengan password baru
+// validasi token reset password
+router.post('/reset-password/validate', validateTokenResetPassword);
+
+// reset password dengan password baru {newPassword, token}
 router.post('/reset-password/confirm', confirmResetAndUpdatePassword);
 
 module.exports = router;
