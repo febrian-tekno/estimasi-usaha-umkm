@@ -7,6 +7,10 @@ import ProductsPage from '../views/ProductsPage.vue';
 import PrivacyPolicyPage from '../views/PrivacyPolicyPage.vue';
 import TermsOfServicePage from '../views/TermsOfServicePage.vue';
 import contactUsPage from '../views/contactUsPage.vue';
+import AdminDashboardPage from '../views/dashboard/AdminDashboardPage.vue';
+import UserDashboardPage from '../views/dashboard/UserDashboardPage.vue';
+import AddNewProducts from '../components/AddNewProducts.vue';
+import AddIngredient from '../components/AddIngredient.vue';
 
 const routes = [
   {
@@ -33,6 +37,23 @@ const routes = [
     path: '/contact',
     component: contactUsPage,
   },
+  {
+    path: '/dashboard',
+    component: AdminDashboardPage,
+  },
+  {
+    path: '/dashboard-user',
+    component: UserDashboardPage,
+  },
+  {
+    path: '/add-product',
+    component: AddNewProducts,
+  },
+  {
+    path: '/add-ingredient',
+    component: AddIngredient,
+  },
+
   ...authRoutes,
   ...notFoundRoutes,
 ];
