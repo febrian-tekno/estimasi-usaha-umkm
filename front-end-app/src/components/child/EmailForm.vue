@@ -27,7 +27,7 @@
 
 <script setup>
 import { ref, computed, watch } from 'vue';
-import AppButton from '../AppButton.vue';
+import AppButton from '../global/AppButton.vue';
 
 const props = defineProps({
   title: String,

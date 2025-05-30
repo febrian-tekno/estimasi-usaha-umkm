@@ -53,10 +53,10 @@ import { useRoute } from 'vue-router';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
-import AppBar from '../../components/AppBar.vue';
-import IndikatorLoading from '../../components/IndikatorLoading.vue';
-import FooterApp from '../../components/FooterApp.vue';
-import StatusResult from '../../components/StatusResult.vue';
+import AppBar from '../../components/global/AppBar.vue';
+import IndikatorLoading from '../../components/global/IndikatorLoading.vue';
+import FooterApp from '../../components/global/FooterApp.vue';
+import StatusResult from '../../components/auth/StatusResult.vue';
 import EmailForm from '../../components/child/EmailForm.vue'
 
 // Mode constants

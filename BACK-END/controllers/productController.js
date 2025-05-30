@@ -1,0 +1,118 @@
+const asyncHandler = require('../middleware/asyncHandler');
+
+const dummyProducts = [
+  {
+    id: 1,
+    name: 'Kopi Gayo Arabica',
+    price: 35000,
+    image: 'https://cdn.pixabay.com/photo/2017/01/20/00/30/coffee-1995071_1280.jpg',
+    stars: 45,
+    views: 230,
+    isVerified: true,
+  },
+  {
+    id: 2,
+    name: 'Keripik Pisang Manis',
+    price: 15000,
+    image: 'https://cdn.pixabay.com/photo/2017/09/03/11/07/banana-chips-2708086_1280.jpg',
+    stars: 21,
+    views: 180,
+    isVerified: false,
+  },
+  {
+    id: 3,
+    name: 'Sambal Ijo Padang',
+    price: 20000,
+    image: 'https://cdn.pixabay.com/photo/2017/01/14/12/59/food-1973473_1280.jpg',
+    stars: 33,
+    views: 320,
+    isVerified: true,
+  },
+  {
+    id: 4,
+    name: 'Madu Hutan Asli',
+    price: 45000,
+    image: 'https://cdn.pixabay.com/photo/2017/06/23/14/38/honey-2436753_1280.jpg',
+    stars: 50,
+    views: 290,
+    isVerified: true,
+  },
+  {
+    id: 5,
+    name: 'Kacang Bawang Renyah',
+    price: 17000,
+    image: 'https://cdn.pixabay.com/photo/2017/05/10/21/03/peanuts-2302589_1280.jpg',
+    stars: 17,
+    views: 150,
+    isVerified: false,
+  },
+  {
+    id: 6,
+    name: 'Dodol Garut Original',
+    price: 22000,
+    image: 'https://cdn.pixabay.com/photo/2018/12/16/19/25/indonesian-food-3871396_1280.jpg',
+    stars: 26,
+    views: 210,
+    isVerified: true,
+  },
+  {
+    id: 7,
+    name: 'Kerupuk Kulit Sapi',
+    price: 25000,
+    image: 'https://cdn.pixabay.com/photo/2016/03/05/21/02/food-1239260_1280.jpg',
+    stars: 19,
+    views: 170,
+    isVerified: false,
+  },
+  {
+    id: 8,
+    name: 'Teh Hitam Organik',
+    price: 30000,
+    image: 'https://cdn.pixabay.com/photo/2017/02/01/16/17/tea-2035481_1280.jpg',
+    stars: 40,
+    views: 260,
+    isVerified: true,
+  },
+  {
+    id: 9,
+    name: 'Minyak Kelapa Tradisional',
+    price: 38000,
+    image: 'https://cdn.pixabay.com/photo/2016/03/05/19/02/coconut-oil-1239530_1280.jpg',
+    stars: 22,
+    views: 190,
+    isVerified: false,
+  },
+  {
+    id: 10,
+    name: 'Kue Kering Coklat',
+    price: 27000,
+    image: 'https://cdn.pixabay.com/photo/2018/06/05/19/25/cookies-3455347_1280.jpg',
+    stars: 38,
+    views: 310,
+    isVerified: true,
+  },
+  {
+    id: 11,
+    name: 'Teh Hijau Organik',
+    price: 28000,
+    image: 'https://cdn.pixabay.com/photo/2017/05/07/08/56/tea-2299477_1280.jpg',
+    stars: 35,
+    views: 270,
+    isVerified: true,
+  },
+  {
+    id: 12,
+    name: 'Coklat Batangan Premium',
+    price: 45000,
+    image: 'https://cdn.pixabay.com/photo/2018/05/23/20/54/chocolate-3423259_1280.jpg',
+    stars: 42,
+    views: 320,
+    isVerified: true,
+  },
+];
+
+const getDummyProducts = asyncHandler(async (req, res, next) => {
+  res.status(200).json({ status: 'success', message: 'berhasil dapat data dummy products', data: dummyProducts });
+});
+
+module.exports = { getDummyProducts };

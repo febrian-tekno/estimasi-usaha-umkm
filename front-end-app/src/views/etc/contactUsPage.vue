@@ -79,8 +79,8 @@
 </template>
 
 <script setup>
-import AppBar from '../components/AppBar.vue'
-import FooterApp from '../components/FooterApp.vue'
+import AppBar from '../components/global/AppBar.vue'
+import FooterApp from '../components/global/FooterApp.vue'
 import { defineComponent, h } from 'vue'
 import {
   MailIcon,

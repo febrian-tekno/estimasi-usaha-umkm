@@ -103,12 +103,12 @@ import { useRoute } from 'vue-router';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
-import AppBar from '../../components/AppBar.vue';
-import AppButton from '../../components/AppButton.vue';
-import FooterApp from '../../components/FooterApp.vue';
-import IndikatorLoading from '../../components/IndikatorLoading.vue';
+import AppBar from '../../components/global/AppBar.vue';
+import AppButton from '../../components/global/AppButton.vue';
+import FooterApp from '../../components/global/FooterApp.vue';
+import IndikatorLoading from '../../components/global/IndikatorLoading.vue';
 import EmailForm from '../../components/child/EmailForm.vue'
-import StatusResult from '../../components/StatusResult.vue';
+import StatusResult from '../../components/auth/StatusResult.vue';
 
 // Mode constants
 const MODE = {

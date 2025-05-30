@@ -51,8 +51,8 @@
 
 <script setup>
 import { ref, computed } from 'vue'
-import AppBar from '../../components/AppBar.vue'
-import FooterApp from '../../components/FooterApp.vue'
+import AppBar from '../../components/global/AppBar.vue'
+import FooterApp from '../../components/global/FooterApp.vue'
 
 const user = {
   name: 'Nama User',

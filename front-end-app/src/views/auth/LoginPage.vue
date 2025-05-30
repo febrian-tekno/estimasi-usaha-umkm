@@ -72,12 +72,12 @@ const urlLoginBE = 'http://localhost:3000/api/v1/auth/sessions'
 import { ref, computed, onMounted} from 'vue';
 import { useRoute } from 'vue-router';
 import axios from 'axios';
-import AppLogo from '../../components/AppLogo.vue';
-import AppBar from '../../components/AppBar.vue';
-import AppButton from '../../components/AppButton.vue';
-import GoogleAuthButton from '../../components/GoogleAuthButton.vue';
-import FooterApp from '../../components/FooterApp.vue';
-import SideBanner from '../../components/SideBanner.vue';
+import AppLogo from '../../components/global/AppLogo.vue';
+import AppBar from '../../components/global/AppBar.vue';
+import AppButton from '../../components/global/AppButton.vue';
+import GoogleAuthButton from '../../components/auth/GoogleAuthButton.vue';
+import FooterApp from '../../components/global/FooterApp.vue';
+import SideBanner from '../../components/auth/SideBanner.vue';
 import Swal from 'sweetalert2';
 
 const route = useRoute();
