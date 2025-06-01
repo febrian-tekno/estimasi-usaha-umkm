@@ -1,6 +1,7 @@
 const asyncHandler = require('../middleware/asyncHandler');
 const models = require('../models/index');
 const User = models.User;
+const Product = models.Product;
 const { verificationRegistEmail } = require('../services/emailService');
 
 // POST register {username, email, password}
@@ -52,7 +53,7 @@ const registerUser = asyncHandler(async (req, res, next) => {
 
 const currentUser = asyncHandler(async (req, res, next) => {
   try {
-    const user = await User.findById(req.user._id).select('_id username email picture');
+    const user = await User.findById(req.user._id).select('_id username email role picture');
     if (user) {
       res.status(200).json({
         status: 'success',
@@ -103,7 +104,9 @@ const getAllUserHandler = asyncHandler(async (req, res) => {
 const getUserById = asyncHandler(async (req, res, next) => {
   try {
     const userId = req.params.id;
-    const user = await User.findById(userId).select('-password');
+    const user = await User.findById(userId)
+      .select('-password')
+      .populate('starred_products', '_id title image isVerified profit stars views');
 
     if (!user) {
       return res.status(404).json({ status: 'failed', message: 'User tidak ditemukan' });
@@ -209,6 +212,99 @@ const updateUserProfile = asyncHandler(async (req, res, next) => {
   }
 });
 
+const addStarredProduct = asyncHandler(async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { productId } = req.body;
+
+    const user = await User.findById(id);
+    if (!user) {
+      res.status(404);
+      throw new Error('User not found');
+    }
+
+    const product = await Product.findById(productId);
+    if (!product) {
+      res.status(404);
+      throw new Error('Product not found');
+    }
+
+    // Cek apakah produk sudah di-star sebelumnya
+    const alreadyStarred = user.starred_products.includes(productId);
+    if (alreadyStarred) {
+      res.status(400);
+      throw new Error('Product already starred');
+    }
+
+    user.starred_products.push(productId);
+    product.stars += 1;
+
+    await product.save();
+    await user.save();
+
+    res.status(200).json({
+      status: 'success',
+      message: 'Product starred successfully',
+      data: user.starred_products,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+const removeStarredProduct = asyncHandler(async (req, res, next) => {
+  try {
+    const { id, productId } = req.params;
+
+    const user = await User.findById(id);
+    if (!user) {
+      res.status(404);
+      throw new Error('User not found');
+    }
+
+    const product = await Product.findById(productId);
+    if (!product) {
+      res.status(404);
+      throw new Error('Product not found');
+    }
+
+    // Cek apakah produk memang sudah di-star
+    const index = user.starred_products.indexOf(productId);
+    if (index === -1) {
+      res.status(400);
+      throw new Error('Product is not starred');
+    }
+
+    // Hapus productId dari array
+    user.starred_products.splice(index, 1);
+    product.stars -= 1;
+
+    await product.save();
+    await user.save();
+
+    res.status(200).json({
+      status: 'success',
+      message: 'Product unstarred successfully',
+      data: user.starredProducts,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+const checkIfProductIsStarred = asyncHandler(async (req, res) => {
+  const { id, productId } = req.params;
+
+  const user = await User.findById(id).select('starredProducts');
+  if (!user) {
+    return res.status(404).json({ message: 'User not found' });
+  }
+
+  const isStarred = user?.starredProducts?.includes(productId);
+
+  res.json({ status: 'success', message: 'Berhasil mendapat status', data: { isStarred: isStarred } });
+});
+
 module.exports = {
   registerUser,
   currentUser,
@@ -217,4 +313,7 @@ module.exports = {
   deleteUserById,
   updatePasswordHandler,
   updateUserProfile,
+  addStarredProduct,
+  removeStarredProduct,
+  checkIfProductIsStarred,
 };

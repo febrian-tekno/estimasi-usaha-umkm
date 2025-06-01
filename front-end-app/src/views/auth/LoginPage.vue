@@ -1,10 +1,10 @@
 <template>
-    <AppBar></AppBar>
   <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-200/100 via-white/100 to-blue-200/100">
     <div class="bg-white/80 p-5 rounded-xl shadow-xl w-full max-w-5xl flex overflow-hidden">
       <SideBanner></SideBanner>
       <div class="w-full md:w-1/2 p-10 flex flex-col justify-center space-y-6">
-        <AppLogo />
+         <a href="/" class="text-sm text-gray-600 hover:underline">← Kembali ke Beranda</a>
+         <AppLogo/>
         <h2 class="text-3xl font-bold">WELCOME BACK!</h2>
         <p class="text-gray-500 text-sm">Please enter log in details below</p>
 
@@ -64,20 +64,18 @@
       </div>
     </div>
   </div>
-  <FooterApp></FooterApp>
 </template>
 
 <script setup>
-const urlLoginBE = 'http://localhost:3000/api/v1/auth/sessions'
+const baseUrlAuth = import.meta.env.VITE_AUTH_BASE_URL
+const urlLoginBE = `${baseUrlAuth}/sessions`
 import { ref, computed, onMounted} from 'vue';
 import { useRoute } from 'vue-router';
 import axios from 'axios';
+import AppButton from '@/components/global/AppButton.vue';
+import GoogleAuthButton from '@/components/auth/GoogleAuthButton.vue';
+import SideBanner from '@/components/auth/SideBanner.vue';
 import AppLogo from '../../components/global/AppLogo.vue';
-import AppBar from '../../components/global/AppBar.vue';
-import AppButton from '../../components/global/AppButton.vue';
-import GoogleAuthButton from '../../components/auth/GoogleAuthButton.vue';
-import FooterApp from '../../components/global/FooterApp.vue';
-import SideBanner from '../../components/auth/SideBanner.vue';
 import Swal from 'sweetalert2';
 
 const route = useRoute();

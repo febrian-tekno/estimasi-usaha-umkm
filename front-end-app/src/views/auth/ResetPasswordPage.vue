@@ -1,6 +1,4 @@
 <template>
-  <AppBar />
-
   <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-200/100 via-white/100 to-blue-200/100">
     <div class="min-h-[calc(100vh-4rem)] my-8 bg-white/80 p-5 rounded-xl shadow-xl w-full max-w-5xl flex justify-center overflow-hidden">
       <div class="w-full max-w-md p-6 md:p-10 mx-auto flex flex-col justify-start items-center space-y-6">
@@ -94,7 +92,6 @@
       </div>
     </div>
   </div>
-  <FooterApp></FooterApp>
 </template>
 
 <script setup>
@@ -103,12 +100,10 @@ import { useRoute } from 'vue-router';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
-import AppBar from '../../components/global/AppBar.vue';
-import AppButton from '../../components/global/AppButton.vue';
-import FooterApp from '../../components/global/FooterApp.vue';
-import IndikatorLoading from '../../components/global/IndikatorLoading.vue';
-import EmailForm from '../../components/child/EmailForm.vue'
-import StatusResult from '../../components/auth/StatusResult.vue';
+import AppButton from '@/components/global/AppButton.vue';
+import IndikatorLoading from '@/components/global/IndikatorLoading.vue';
+import EmailForm from '@/components/child/EmailForm.vue'
+import StatusResult from '@/components/auth/StatusResult.vue';
 
 // Mode constants
 const MODE = {

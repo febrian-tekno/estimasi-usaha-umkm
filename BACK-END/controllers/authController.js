@@ -139,13 +139,16 @@ const createSession = asyncHandler(async (req, res, next) => {
 });
 
 const deleteSession = asyncHandler(async (req, res, next) => {
+  console.log('log out handler running');
   try {
     res.cookie('session', '', {
-      httpOnly: true,
       expires: new Date(0),
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'None',
+      httpOnly: true,
+      secure: false,
+      sameSite: 'Lax',
+      path: '/',
     });
+    console.log('log out berhasil');
     res.status(200).json({
       status: 'success',
       message: 'Logout berhasil',
@@ -268,13 +271,12 @@ const confirmResetAndUpdatePassword = asyncHandler(async (req, res, next) => {
   }
 });
 
-const validateTokenResetPassword = asyncHandler( async (req, res, next) => {
-   if (!req.body) {
+const validateTokenResetPassword = asyncHandler(async (req, res, next) => {
+  if (!req.body) {
     return res.status(400).json({ status: 'failed', message: 'Request body kosong' });
   }
   const token = req.body.token;
-  if (!token )
-    return res.status(400).json({ status: 'failed', message: 'token harus di isi' });
+  if (!token) return res.status(400).json({ status: 'failed', message: 'token harus di isi' });
 
   try {
     const userData = await User.findOne({ token_verify: token });
@@ -282,12 +284,14 @@ const validateTokenResetPassword = asyncHandler( async (req, res, next) => {
     if (!userData || userData.token_expires < Date.now()) {
       return res.status(401).json({ status: 'failed', message: 'link salah atau kadaluarsa' });
     } else {
-      return res.status(200).json({ status: 'success', message: 'berhasil validasi token, anda dapat mebuat password baru sekarang' });
+      return res
+        .status(200)
+        .json({ status: 'success', message: 'berhasil validasi token, anda dapat mebuat password baru sekarang' });
     }
   } catch (err) {
     next(err);
   }
-})
+});
 
 module.exports = {
   verifyEmailRegist,

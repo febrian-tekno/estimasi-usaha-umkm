@@ -54,6 +54,8 @@ app.use(
 
 // endpoint api
 app.use('/api/v1', endpointApi);
+// endpoint image mutler
+app.use('/uploads', express.static('uploads'));
 
 // error path Not found
 app.use(notFoundPath);

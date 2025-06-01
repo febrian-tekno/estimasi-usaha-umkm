@@ -21,6 +21,7 @@ const createResToken = (user) => {
       httpOnly: true,
       secure: false,
       sameSite: 'Lax',
+      path: '/',
     };
     const cookie = { name: 'session', token, cookieOption };
     return cookie;

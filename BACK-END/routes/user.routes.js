@@ -7,6 +7,9 @@ const {
   getUserById,
   updatePasswordHandler,
   updateUserProfile,
+  addStarredProduct,
+  removeStarredProduct,
+  checkIfProductIsStarred,
 } = require('../controllers/userController');
 const { protectedMiddleware, isAdmin, protectedUser } = require('../middleware/authMiddleware');
 const router = express.Router();
@@ -31,5 +34,14 @@ router.put('/:id', protectedMiddleware, protectedUser, updateUserProfile);
 
 // Delete user by ID (protected route, accessible by the user themself or admin)
 router.delete('/:id', protectedMiddleware, protectedUser, deleteUserById);
+
+// stared products
+router.post('/:id/starred', protectedMiddleware, protectedUser, addStarredProduct);
+
+//unstared product
+router.delete('/:id/starred/:productId', protectedMiddleware, protectedUser, removeStarredProduct);
+
+// check product is already stred or not
+router.get('/:id/starred/:productId', protectedMiddleware, protectedUser, checkIfProductIsStarred);
 
 module.exports = router;

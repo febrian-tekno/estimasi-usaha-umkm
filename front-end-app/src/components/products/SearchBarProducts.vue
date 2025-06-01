@@ -41,10 +41,14 @@ const store = useSearchStore()
 const router = useRouter()
 
 function onSearch() {
-  if (!search.value.trim()) return
   store.updateKeyword(search.value)
-  router.push(`/products/search?q=${encodeURIComponent(search.value)}`)
+  router.push(
+    search.value.trim()
+      ? `/products/search?q=${encodeURIComponent(search.value)}`
+      : `/products/search`
+  )
 }
+
 
 function clearSearch() {
   search.value = ''

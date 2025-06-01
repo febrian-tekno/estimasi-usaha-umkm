@@ -1,9 +1,9 @@
 <template>
-    <AppBar></AppBar>
   <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-200/100 via-white/100 to-blue-200/100">
     <div class="bg-white/80 p-5 rounded-xl shadow-xl w-full max-w-5xl flex overflow-hidden">
       <div class="w-full md:w-1/2 p-10 flex flex-col justify-center space-y-6">
-        <AppLogo />
+         <a href="/" class="text-sm text-gray-600 hover:underline">← Kembali ke Beranda</a>
+         <AppLogo/>
         <h2 class="text-3xl font-bold">Create an Account!</h2>
         <p class="text-gray-500 text-sm">Join now to JualApa and start your bussiness</p>
 
@@ -87,20 +87,17 @@
     </div>
 
   </div>
-  <FooterApp></FooterApp>
 </template>
 
 <script setup>
-const urlRegisterBE = 'http://localhost:3000/api/v1/users'
+const urlRegisterBE = import.meta.env.VITE_USER_BASE_URL;
 import { ref, computed} from 'vue';
 import axios from 'axios';
-import AppLogo from '../../components/global/AppLogo.vue';
-import AppBar from '../../components/global/AppBar.vue';
-import AppButton from '../../components/global/AppButton.vue';
-import GoogleAuthButton from '../../components/auth/GoogleAuthButton.vue';
-import FooterApp from '../../components/global/FooterApp.vue';
-import SideBanner from '../../components/auth/SideBanner.vue';
+import AppButton from '@/components/global/AppButton.vue';
+import GoogleAuthButton from '@/components/auth/GoogleAuthButton.vue';
+import SideBanner from '@/components/auth/SideBanner.vue';
 import Swal from 'sweetalert2';
+import AppLogo from '../../components/global/AppLogo.vue';
 
 const username = ref('');
 const email = ref('');

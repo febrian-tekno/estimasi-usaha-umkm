@@ -41,7 +41,7 @@ const userSchema = new Schema(
     last_login: { type: Date },
     token_verify: { type: String },
     token_expires: { type: Date },
-    starred_product: {
+    starred_products: {
       type: [mongoose.Schema.Types.ObjectId],
       ref: 'Product',
       default: [],

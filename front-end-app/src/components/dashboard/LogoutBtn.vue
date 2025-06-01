@@ -1,0 +1,52 @@
+<template>
+    <button 
+        @click="logOutHandle"
+        class="text-1xl bg-red-500 px-5 py-2 rounded font-bold text-gray-800 mb-8"><i class="fas fa-sign-out-alt"></i> Log out</button>
+      
+</template>
+
+<script setup>
+import Swal from 'sweetalert2'
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
+import axios from 'axios'
+
+const authStore = useAuthStore();
+const router = useRouter()
+
+const baseUrlAuth = import.meta.env.VITE_AUTH_BASE_URL
+
+async function logOutHandle() {
+  const result = await Swal.fire({
+    title: 'Yakin ingin logout?',
+    text: 'Kamu akan keluar dari akun ini.',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Lanjutkan',
+    cancelButtonText: 'Batal',
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+  });
+
+  if (!result.isConfirmed) return;
+
+   try {
+    await axios.delete(`${baseUrlAuth}/sessions`, {
+      withCredentials: true,
+    });
+
+    // Hapus state user di pinia
+    authStore.user = null;
+    authStore.isLogin = false;
+    authStore.isAdmin = false;
+
+    router.push('/')
+
+    Swal.fire('Berhasil Logout', '', 'success');
+  } catch (error) {
+    Swal.fire('Gagal Logout', 'Terjadi kesalahan saat logout', 'error');
+    console.error(error);
+  }
+}
+
+</script>

@@ -106,7 +106,7 @@ const sortOptions = [
   { label: 'Paling Populer', value: 'popularity' },
 ]
 
-const maxCapitalOptions = [100000, 200000, 500000]
+const maxCapitalOptions = [100000, 200000, 500000, 1000000]
 
 const categories = [
   { label: 'Semua', value: '', icon: 'https://img.icons8.com/ios-filled/50/menu.png' },

@@ -18,7 +18,7 @@
           </div>
         </div>
         <div>
-          <img src="/src/assets/images/sidebanner.jpg" alt="UMKM Illustration" class="w-full rounded-xl shadow-md" />
+          <img src="/src/assets/images/heroImageHomePage.jpg" alt="UMKM Illustration"  />
         </div>
       </div>
 
@@ -104,7 +104,7 @@
     <div >
       <div class="flex items-center justify-between mb-6">
           <h2 class="text-2xl font-bold text-gray-800">Rekomendasi Produk</h2>
-          <a href="/products" class="text-orange-500 hover:underline text-sm font-semibold">Show All</a>
+          <a href="/products/search" class="text-orange-500 hover:underline text-sm font-semibold">Show All</a>
       </div>
       <div> 
         <IndikatorLoading v-if="loading" :text="'fetch data produk...'"/>
@@ -213,36 +213,37 @@ const error = ref(false);
 const errorRes = ref('');
 
 const baseProductsUrl = import.meta.env.VITE_PRODUCTS_BASE_URL
+
 async function fetchProducts(query) {
-  loading.value = true;
-  console.log(query)
+  loading.value = true
   try {
     const response = await axios.get(`${baseProductsUrl}?${query}`, {
       withCredentials: true,
-    });
-    products.value = response.data.data;
-    error.value = false;
+    })
+    const result = response.data.data
+    products.value = result.products
+    error.value = false
   } catch (err) {
-    error.value = true;
-    errorRes.value = err.response?.data?.message || err.message || 'Terjadi kesalahan';
+    error.value = true
+    errorRes.value = err.response?.data?.message || err.message || 'Terjadi kesalahan'
   } finally {
-    loading.value = false;
+    loading.value = false
   }
 }
 
-// Watch queryParams dan panggil fetchProducts setiap berubah
+// Watch queryParams untuk fetch ulang data saat berubah
 watch(
   () => searchStore.queryParams,
   (newQuery) => {
-    fetchProducts(newQuery);
+    fetchProducts(newQuery)
   },
   { immediate: true }
-);
+)
 
 
 onMounted(() => {
-  fetchProducts(searchStore.queryParams);
-});
+  fetchProducts(searchStore.queryParams)
+})
 
 </script>
 

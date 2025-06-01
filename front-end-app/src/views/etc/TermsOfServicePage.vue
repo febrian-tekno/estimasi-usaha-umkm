@@ -103,6 +103,6 @@
 </template>
 
 <script setup>
-import AppBar from '../components/global/AppBar.vue';
-import FooterApp from '../components/global/FooterApp.vue';
+import AppBar from '@/components/global/AppBar.vue';
+import FooterApp from '@/components/global/FooterApp.vue';
 </script>

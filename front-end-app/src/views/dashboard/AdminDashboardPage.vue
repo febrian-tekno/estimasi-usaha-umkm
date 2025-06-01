@@ -1,121 +1,273 @@
 <template>
-  <div class="min-h-screen bg-gray-100 p-6">
-    <!-- Header -->
-    <header class="flex justify-between items-center mb-6">
-      <h1 class="text-2xl font-bold">JualApa Admin Dashboard</h1>
-      <button class="btn btn-primary">Logout</button>
+  <AppBar />
+  <div class="min-h-screen bg-gray-100 p-4 sm:p-6">
+    <!-- HEADER -->
+    <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6">
+      <h1 class="text-xl sm:text-2xl font-bold">JualApa Admin Dashboard</h1>
+      <LogoutBtn />
     </header>
 
-    <!-- Dashboard Quick Actions -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-      <button class="btn btn-secondary" @click="addProduct">➕ Add New Product</button>
-      <button class="btn btn-secondary" @click="addPrice">➕ Add Ingredient Price</button>
-      <button class="btn btn-secondary" @click="verifyProduct">✅ Verify Product Eligibility</button>
+    <!-- ACTION BUTTONS -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+      <a href="/products/add" class="btn btn-secondary text-sm">➕ Add New Product</a>
+      <button class="btn btn-secondary text-sm" @click="showIngredientForm = true">➕ Add Ingredient</button>
+      <button class="btn btn-secondary text-sm" @click="showPackingForm = true">➕ Add Packing</button>
+      <button class="btn btn-secondary text-sm" @click="showToolsForm = true">➕ Add Tools</button>
     </div>
 
-    <!-- Product List -->
-    <div class="bg-white p-4 rounded shadow mb-6">
-      <h2 class="text-xl font-semibold mb-2">📦 All Products</h2>
-      <table class="table w-full">
+    <!-- MODALS -->
+    <Teleport to="body">
+      <FormModal
+        v-if="showIngredientForm"
+        title="Add Ingredient"
+        :url="`${baseUrl}/v1/ingredients`"
+        @close="showIngredientForm = false"
+        @success="render"
+      />
+      <FormModal
+        v-if="showPackingForm"
+        title="Add Packaging"
+        :url="`${baseUrl}/v1/packages`"
+        @close="showPackingForm = false"
+        @success="render"
+      />
+      <FormModal
+        v-if="showToolsForm"
+        title="Add Tools"
+        :url="`${baseUrl}/v1/tools`"
+        @close="showToolsForm = false"
+        @success="render"
+      />
+    </Teleport>
+
+    <!-- TABLE PRODUK -->
+    <div v-if="products" class="bg-white p-4 rounded shadow mb-6 overflow-x-auto">
+      <h2 class="text-lg sm:text-xl font-semibold mb-2">📦 All Products</h2>
+      <table class="table w-full min-w-[700px] text-sm">
         <thead>
           <tr>
-            <th>Name</th>
+            <th class="text-left">Name</th>
             <th>Category</th>
-            <th>Popularity 👁️</th>
+            <th>Views 👁️</th>
             <th>Verified ✅</th>
             <th>Favorite ⭐</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="product in products" :key="product.id">
-            <td>{{ product.name }}</td>
+          <tr v-for="product in products" :key="product._id" class="text-center">
+            <td class="text-left">{{ product.title }}</td>
             <td>{{ product.category }}</td>
-            <td>{{ product.popularity }}</td>
-            <td>{{ product.verified ? 'Yes' : 'No' }}</td>
-            <td>{{ product.favorite ? 'Yes' : 'No' }}</td>
+            <td>{{ product.views }}</td>
+            <td :class="product.isVerified ? 'text-green-600 font-semibold' : 'text-black'">
+              {{ product.isVerified ? 'Yes' : 'No' }}
+            </td>
+            <td>{{ product.stars }}</td>
             <td>
-              <button class="btn btn-sm btn-ghost"><i class="fas fa-pencil-alt"></i></button>
-              <button class="btn btn-sm btn-ghost text-red-500"><i class="fas fa-trash"></i></button>
+              <div class="flex justify-center gap-2">
+                <button class="btn btn-sm btn-ghost" @click="editProduct(product._id)">
+                  <i class="fas fa-pencil-alt"></i>
+                </button>
+                <button class="btn btn-sm btn-ghost text-red-500" @click="deleteProduct(product._id)">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <!-- Ingredient Price List -->
-    <div class="bg-white p-4 rounded shadow mb-6">
-      <h2 class="text-xl font-semibold mb-2">🛒 Ingredient Prices</h2>
-      <table class="table w-full">
-        <thead>
-          <tr>
-            <th>Ingredient</th>
-            <th>Unit</th>
-            <th>Price</th>
-            <th>Source</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="entry in priceList" :key="entry.id">
-            <td>{{ entry.ingredient }}</td>
-            <td>{{ entry.unit }}</td>
-            <td>{{ entry.price }}</td>
-            <td>{{ entry.source }}</td>
-          </tr>
-        </tbody>
-      </table>
+    <!-- LIST INGREDIENTS -->
+    <div class="bg-white p-4 rounded shadow mb-6 overflow-x-auto">
+      <ListItem
+        title="All Ingredients"
+        :entries="ingredients"
+        :baseServerUrl="baseServerUrl"
+        @edit="id => handleEdit(id)"
+        @delete="id => handleDelete({ id, type: 'ingredient' })"
+      />
     </div>
 
-    <!-- Users Table -->
-    <div class="bg-white p-4 rounded shadow">
-      <h2 class="text-xl font-semibold mb-2">👤 All Users</h2>
-      <table class="table w-full">
+    <!-- LIST PACKAGING -->
+    <div class="bg-white p-4 rounded shadow mb-6 overflow-x-auto">
+      <ListItem
+        title="All Packages"
+        :entries="packages"
+        :baseServerUrl="baseServerUrl"
+        @edit="id => handleEdit(id)"
+        @delete="id => handleDelete({ id, type: 'package' })"
+      />
+    </div>
+
+    <!-- LIST TOOLS -->
+    <div class="bg-white p-4 rounded shadow mb-6 overflow-x-auto">
+      <ListItem
+        title="All Tools"
+        :entries="tools"
+        :baseServerUrl="baseServerUrl"
+        @edit="id => handleEdit(id)"
+        @delete="id => handleDelete({ id, type: 'tool' })"
+      />
+    </div>
+
+    <!-- USER TABLE -->
+    <div class="bg-white p-4 rounded shadow overflow-x-auto">
+      <h2 class="text-lg sm:text-xl font-semibold mb-2">👤 All Users</h2>
+      <table class="table w-full min-w-[700px] text-sm">
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Email</th>
+            <th class="text-left">Name</th>
+            <th class="text-left">Email</th>
             <th>Role</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="user in users" :key="user.id">
-            <td>{{ user.name }}</td>
-            <td>{{ user.email }}</td>
+          <tr v-for="user in users" :key="user._id" class="text-center">
+            <td class="text-left">{{ user.username }}</td>
+            <td class="text-left">{{ user.email }}</td>
             <td>{{ user.role }}</td>
             <td>
-              <button class="btn btn-sm btn-ghost"><i class="fas fa-eye"></i></button>
-              <button class="btn btn-sm btn-ghost"><i class="fas fa-pencil-alt"></i></button>
-              <button class="btn btn-sm btn-ghost text-red-500"><i class="fas fa-trash"></i></button>
+              <div class="flex gap-2 justify-center">
+                <button class="btn btn-sm btn-ghost" @click="showDetailsUser(user._id)">
+                  <i class="fas fa-eye"></i>
+                </button>
+                <button class="btn btn-sm btn-ghost">
+                  <i class="fas fa-pencil-alt"></i>
+                </button>
+                <button class="btn btn-sm btn-ghost text-red-500">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
   </div>
+
+  <FooterApp />
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import AppBar from '@/components/global/AppBar.vue'
+import FooterApp from '@/components/global/FooterApp.vue'
+import LogoutBtn from '@/components/dashboard/logoutBtn.vue'
+import FormModal from '@/components/dashboard/FormModal.vue'
+import ListItem from '../../components/dashboard/ListItem.vue'
+import { onMounted, ref } from 'vue'
+import axios from 'axios'
+import Swal from 'sweetalert2'  
 
-const products = ref([
-  { id: 1, name: 'Es Coklat Lumer', category: 'Minuman', popularity: 345, verified: true, favorite: true },
-  { id: 2, name: 'Dimsum Ayam', category: 'Makanan', popularity: 210, verified: false, favorite: false },
-])
+const baseUrl = import.meta.env.VITE_API_BASE_URL
 
-const priceList = ref([
-  { id: 1, ingredient: 'Coklat Bubuk', unit: '100g', price: 'Rp 8.000', source: 'Tokopedia' },
-  { id: 2, ingredient: 'Kulit Dimsum', unit: '10 pcs', price: 'Rp 5.000', source: 'Shopee' },
-])
+const showIngredientForm = ref(false)
+const showPackingForm = ref(false)
+const showToolsForm = ref(false)
 
-const users = ref([
-  { id: 1, name: 'Budi Santoso', email: 'budi@mail.com', role: 'admin' },
-  { id: 2, name: 'Sari Dewi', email: 'sari@mail.com', role: 'user' },
-])
+const products = ref([])
+const users = ref([])
+const ingredients = ref([])
+const packages = ref([])
+const tools = ref([])
 
-const addProduct = () => alert('Add product clicked')
-const addPrice = () => alert('Add price clicked')
-const verifyProduct = () => alert('Verify clicked')
+
+async function fetchProducts() {
+  try {
+    const res = await axios.get(`${baseUrl}/v1/products`, { withCredentials: true })
+    products.value = res.data.data.products;
+    console.log(products.value)
+  } catch (error) {
+    console.error('Gagal mengambil data product:', error)
+  }
+}
+
+async function fetchUsers() {
+  try {
+    const res = await axios.get(`${baseUrl}/v1/users`, { withCredentials: true })
+    users.value = res.data.data
+  } catch (error) {
+    console.error('Gagal mengambil data users:', error)
+  }
+}
+
+async function fetchIngredients() {
+  try {
+    const res = await axios.get(`${baseUrl}/v1/ingredients`, { withCredentials: true })
+    ingredients.value = res.data.data
+  } catch (error) {
+    console.error('Gagal mengambil data price list:', error)
+  }
+}
+
+async function fetchPackagings() {
+  try {
+    const res = await axios.get(`${baseUrl}/v1/packages`, { withCredentials: true })
+    packages.value = res.data.data
+  } catch (error) {
+    console.error('Gagal mengambil data packages list:', error)
+  }
+}
+
+async function fetchTools() {
+  try {
+    const res = await axios.get(`${baseUrl}/v1/tools`, { withCredentials: true })
+    tools.value = res.data.data
+  } catch (error) {
+    console.error('Gagal mengambil data tools list:', error)
+  }
+}
+
+async function render() {
+  await fetchProducts();
+  await fetchUsers();
+  await fetchIngredients();
+  await fetchPackagings();
+  await fetchTools();
+}
+onMounted(() => {
+  render()
+})
+
+function handleEdit(id) {
+  console.log('Edit clicked for ID:', id)
+  // logic handle edit
+}
+
+// Handle Delete dengan SweetAlert2 dan reload data sesuai tipe
+async function handleDelete({ id, type }) {
+  const result = await Swal.fire({
+    title: `Are you sure to delete this ${type}?`,
+    text: "You won't be able to revert this!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Yes, delete it!'
+  })
+
+  if(result.isConfirmed) {
+    let endpoint = ''
+    if(type === 'ingredient') endpoint = `${baseUrl}/v1/ingredients/${id}`
+    else if(type === 'package') endpoint = `${baseUrl}/v1/packages/${id}`
+    else if(type === 'tool') endpoint = `${baseUrl}/v1/tools/${id}`
+
+    try {
+      await axios.delete(endpoint, { withCredentials: true })
+      Swal.fire('Deleted!', `${type} has been deleted.`, 'success')
+
+      // Refresh data sesuai tipe
+      if(type === 'ingredient') await fetchIngredients()
+      else if(type === 'package') await fetchPackagings()
+      else if(type === 'tool') await fetchTools()
+    } catch (error) {
+      Swal.fire('Error!', 'Failed to delete item.', 'error')
+      console.error(error)
+    }
+  }
+}
+
 </script>
 
 <style scoped>
@@ -125,8 +277,3 @@ const verifyProduct = () => alert('Verify clicked')
   border-bottom: 1px solid #e5e7eb;
 }
 </style>
-
-<!-- Required dependencies:
- - TailwindCSS
- - Font Awesome (for icons)
- - DaisyUI (btn, table classes) -->

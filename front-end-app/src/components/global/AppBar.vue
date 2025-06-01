@@ -22,15 +22,12 @@
       </button>
 
       <!-- Logo -->
-      <div v-if="!isMobileSearchActive" class="flex items-center space-x-3">
-        <img src="https://th.bing.com/th/id/OIP.sF-UQHgTnXPwRSfmt8QKRwAAAA?rs=1&pid=ImgDetMain" alt="Logo" class="w-8 h-8" />
-        <a href="/" class="text-xl font-bold text-gray-800 hover:text-orange-500">JualApa</a>
-      </div>
+       <AppLogo  v-if="!isMobileSearchActive" />
 
       <!-- Desktop menu -->
       <div class="hidden md:flex space-x-4">
         <a href="/" class="text-gray-700 hover:text-orange-500">Beranda</a>
-        <a href="/products" class="text-gray-700 hover:text-orange-500">Produk</a>
+        <a href="/products/search" class="text-gray-700 hover:text-orange-500">Produk</a>
         <a href="/about" class="text-gray-700 hover:text-orange-500">Tentang</a>
       </div>
 
@@ -125,8 +122,8 @@
     ref="menuPanelRef"
     class="fixed top-16 left-0 right-0 bg-white shadow-md p-4 md:hidden z-50 transition-all duration-300"
   >
-    <a href="/home" class="block py-1 text-gray-700 hover:text-white hover:bg-orange-500">Beranda</a>
-    <a href="/products" class="block py-1 text-gray-700 hover:text-white hover:bg-orange-500">Produk</a>
+    <a href="/" class="block py-1 text-gray-700 hover:text-white hover:bg-orange-500">Beranda</a>
+    <a href="/products/search" class="block py-1 text-gray-700 hover:text-white hover:bg-orange-500">Produk</a>
     <a href="/about" class="block py-1 text-gray-700 hover:text-white hover:bg-orange-500">Tentang</a>
   </div>
 </template>
@@ -134,9 +131,12 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
-import { useAuthStore } from '../../stores/auth';
+import { useAuthStore } from '@/stores/auth';
+import { useSearchStore } from '@/stores/search'
+import AppLogo from './AppLogo.vue';
 
 const auth = useAuthStore();
+const search = useSearchStore();
 const router = useRouter();
 
 const isMobileMenuOpen = ref(false);
@@ -164,9 +164,11 @@ function showMobileSearch() {
   });
 }
 
+
 function handleSearch() {
-  if (!searchKeyword.value.trim()) return;
-  router.push(`/products/search?q=${encodeURIComponent(searchKeyword.value.trim())}`);
+    if (!searchKeyword.value.trim()) return;
+  search.updateKeyword(searchKeyword.value)
+  router.push(`/products/search?q=${encodeURIComponent(searchKeyword.value)}`)
 }
 
 function handleClickOutsideMenu(e) {
