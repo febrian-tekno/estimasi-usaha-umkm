@@ -8,6 +8,7 @@ const Ingredient = models.Ingredient;
 
 const addIngredientHandler = asyncHandler(async (req, res) => {
   const { name, amount, price } = req.body;
+  if (!req.file) return res.status(400).json({ status: 'failed', message: 'foto harus ada' });
 
   const file = req.file;
   if (!name || !amount || !price) {

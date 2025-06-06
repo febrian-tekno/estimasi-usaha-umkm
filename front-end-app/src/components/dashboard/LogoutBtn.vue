@@ -1,9 +1,13 @@
 <template>
-    <button 
-        @click="logOutHandle"
-        class="text-1xl bg-red-500 px-5 py-2 rounded font-bold text-gray-800 mb-8"><i class="fas fa-sign-out-alt"></i> Log out</button>
-      
+  <button 
+    @click="logOutHandle"
+    class="text-1xl bg-red-500 px-5 py-2 rounded font-bold text-gray-800 mb-8 flex items-center gap-2"
+  >
+    <i class="fas fa-sign-out-alt"></i>
+    <span class="hidden sm:inline">Log out</span>
+  </button>
 </template>
+
 
 <script setup>
 import Swal from 'sweetalert2'

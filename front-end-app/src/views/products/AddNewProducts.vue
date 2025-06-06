@@ -1,12 +1,20 @@
 <template>
   <AppBar />
+
   <div class="m-8">
     <a @click.prevent="goBack" href="#" class="text-xl hover:underline">← Kembali</a>
   </div>
 
-  <h1 class="text-3xl ml-12 font-bold">Tambah Produk</h1>
+  <div class="flex justify-between items-center px-6">
+    <h1 class="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 ml-4 sm:ml-6 md:ml-12">
+      Buat Estimasi Produk
+    </h1>
+    <div class="flex m-4 gap-2">
+      <p>ini aku</p>
+    </div>
+  </div>
 
-  <div class="flex flex-col lg:flex-row gap-6 p-6 bg-white max-w-7xl mx-auto">
+  <div class="flex flex-col lg:flex-row gap-6 p-6 bg-white max-w-7xl mx-auto rounded-lg shadow-sm">
     <!-- Left: Image Upload -->
     <div class="flex-1 flex flex-col items-center">
       <label
@@ -20,7 +28,7 @@
           accept="image/*"
           hidden
         />
-        <div v-if="!store.previewImage">
+        <div v-if="!store.previewImage" class="text-center">
           <p>Click to upload image</p>
         </div>
         <img
@@ -46,30 +54,34 @@
         />
       </div>
 
-      <!-- Category (radio/button enum) -->
+      <!-- Category -->
       <div>
         <label class="block font-medium text-blue-900">Kategori *</label>
         <div class="mt-1 flex gap-4">
           <button
-            :class="store.form.rawCategory === 'food' ? 'bg-orange-500 text-white' : 'bg-gray-200 text-gray-600'"
-            @click="store.form.rawCategory = 'food'"
             type="button"
-            class="px-4 py-2 rounded"
+            :class="store.form.rawCategory === 'food'
+              ? 'bg-orange-500 text-white'
+              : 'bg-gray-200 text-gray-600'"
+            class="px-4 py-2 rounded focus:outline-none"
+            @click="store.form.rawCategory = 'food'"
           >
             Food
           </button>
           <button
-            :class="store.form.rawCategory === 'drink' ? 'bg-orange-500 text-white' : 'bg-gray-200 text-gray-600'"
-            @click="store.form.rawCategory = 'drink'"
             type="button"
-            class="px-4 py-2 rounded"
+            :class="store.form.rawCategory === 'drink'
+              ? 'bg-orange-500 text-white'
+              : 'bg-gray-200 text-gray-600'"
+            class="px-4 py-2 rounded focus:outline-none"
+            @click="store.form.rawCategory = 'drink'"
           >
             Drink
           </button>
         </div>
       </div>
 
-      <!-- Tags (comma‐separated input) -->
+      <!-- Tags -->
       <div>
         <label for="tagsInput" class="block font-medium text-blue-900">Tags</label>
         <input
@@ -119,7 +131,7 @@
         />
       </div>
 
-      <!-- Capital & Profit (readonly) -->
+      <!-- Capital & Profit -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label class="block font-medium text-blue-900">Capital (modal)</label>
@@ -143,51 +155,9 @@
         </div>
       </div>
     </div>
-
-    <!-- Modal Production -->
-    <div
-      v-if="showProductionModal"
-      class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
-      @click.self="showProductionModal = false"
-    >
-      <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
-        <h2 class="text-xl font-bold text-blue-900 mb-4">Production Modal</h2>
-        <p>
-          <strong>Packaging + Ingredients combined price:</strong>
-          Rp {{ formatCurrency(store.productionModalTotal) }}
-        </p>
-        <button
-          @click="showProductionModal = false"
-          class="mt-4 bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600"
-        >
-          Close
-        </button>
-      </div>
-    </div>
-
-    <!-- Modal Initial -->
-    <div
-      v-if="showInitialModal"
-      class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
-      @click.self="showInitialModal = false"
-    >
-      <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
-        <h2 class="text-xl font-bold text-blue-900 mb-4">Initial Modal</h2>
-        <p>
-          <strong>All items (Packaging + Ingredients + Tools):</strong>
-          Rp {{ formatCurrency(store.initialModalTotal) }}
-        </p>
-        <button
-          @click="showInitialModal = false"
-          class="mt-4 bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600"
-        >
-          Close
-        </button>
-      </div>
-    </div>
   </div>
 
-  <div class="m-4 space-y-6">
+  <div class="m-4 space-y-6 bg-white max-w-7xl mx-auto p-6 rounded-lg shadow-sm">
     <!-- Steps -->
     <div>
       <label class="block font-medium text-blue-900">Steps</label>
@@ -199,7 +169,7 @@
         <textarea
           v-model="store.form.steps[index]"
           placeholder="Describe step..."
-          class="w-full border border-gray-300 rounded-md px-3 py-2 resize-y focus:ring-2 focus:ring-orange-500"
+          class="w-full border border-gray-300 rounded-md px-3 py-2 resize-y focus:outline-none focus:ring-2 focus:ring-orange-500"
         ></textarea>
         <button
           @click="store.removeStep(index)"
@@ -218,8 +188,38 @@
       </button>
     </div>
 
-    <!-- Item Groups -->
-    <div v-for="(group, idx) in store.itemGroups" :key="idx" class="space-y-2">
+    <!-- Tips (Opsional) -->
+    <div>
+      <label class="block font-medium text-blue-900">Tips (opsional)</label>
+      <div
+        v-for="(tip, index) in store.form.tips"
+        :key="index"
+        class="flex items-start gap-2 mt-2"
+      >
+        <textarea
+          v-model="store.form.tips[index]"
+          placeholder="Enter tip..."
+          class="w-full border border-gray-300 rounded-md px-3 py-2 resize-y focus:outline-none focus:ring-2 focus:ring-orange-500"
+        ></textarea>
+        <button
+          @click="store.removeTip(index)"
+          type="button"
+          class="text-red-600 hover:text-red-800 px-2 py-1"
+        >
+          Remove
+        </button>
+      </div>
+      <button
+        @click="store.addTip"
+        type="button"
+        class="mt-2 bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600"
+      >
+        Add Tip
+      </button>
+    </div>
+
+    <!-- Item Groups: Ingredients / Packaging / Tools -->
+    <div v-for="(group, idx) in store.itemGroups" :key="idx" class="space-y-4">
       <h3 class="text-lg font-semibold text-blue-900">{{ group.label }}</h3>
 
       <div
@@ -227,29 +227,39 @@
         :key="i"
         class="flex flex-col md:flex-row items-center gap-3"
       >
+        <!-- Dropdown: panggil updateItemPrice juga saat user memilih -->
         <vue-select-next
+          :key="group.key + '-' + i"
           v-model="store.form[group.key][i].selected"
           :options="group.options"
           :filterable="false"
           :remote="true"
           label="displayName"
-          :reduce="option => option._id"
           placeholder="Search and select..."
-          @search="(search, loading) => store.onSearch(search, loading, group.key)"
+          @search="handleSearch(group.key)"
           @open="() => store.fetchOptions(group.key)"
+          @update:modelValue="() => updateItemPrice(group.key, i)"
           class="w-full md:w-1/2"
         />
+
+        <!-- Qty: panggil updateItemPrice saat qty berubah -->
         <input
           type="number"
           min="1"
           v-model.number="store.form[group.key][i].qty"
-          @input="store.updateItemPrice(group.key, i)"
+          @input="() => updateItemPrice(group.key, i)"
           placeholder="Qty"
           class="w-full md:w-24 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
         />
-        <div class="text-blue-900">Rp {{ formatCurrency(item.price) }}</div>
+
+        <!-- Tampilkan harga per baris -->
+        <div class="text-blue-900 w-full md:w-32">
+          Rp {{ formatCurrency(store.form[group.key][i].price) }}
+        </div>
+
+        <!-- Hapus baris -->
         <button
-          @click="store.removeItem(group.key, i)"
+          @click="() => store.removeItem(group.key, i)"
           type="button"
           class="text-red-500 hover:text-red-700 font-bold text-xl"
         >
@@ -257,14 +267,16 @@
         </button>
       </div>
 
+      <!-- Tombol Add Item -->
       <button
-        @click="store.addItem(group.key)"
+        @click="() => store.addItem(group.key)"
         type="button"
         class="mt-2 bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600"
       >
         Add {{ group.label.slice(0, -1) }}
       </button>
 
+      <!-- Tampilkan Total per Group -->
       <div class="text-right font-medium text-blue-800 mt-1">
         Total {{ group.label }}: Rp {{ formatCurrency(store.getTotalPrice(group.key)) }}
       </div>
@@ -290,7 +302,7 @@
 
     <!-- Margin Info -->
     <div class="text-blue-800 space-y-1 font-semibold">
-      <p>Margin per day: Rp {{ formatCurrency(store.marginPerDay) }}</p>
+      <p>Margin per day: Rp {{ formatCurrency(store.profitPerDay) }}</p>
       <p>Margin per month: Rp {{ formatCurrency(store.marginPerMonth) }}</p>
     </div>
 
@@ -309,11 +321,52 @@
     </button>
   </div>
 
+  <!-- Modals -->
+  <div
+    v-if="showProductionModal"
+    class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+    @click.self="showProductionModal = false"
+  >
+    <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
+      <h2 class="text-xl font-bold text-blue-900 mb-4">Production Modal</h2>
+      <p>
+        <strong>Packaging + Ingredients combined price:</strong>
+        Rp {{ formatCurrency(store.productionModalTotal) }}
+      </p>
+      <button
+        @click="showProductionModal = false"
+        class="mt-4 bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600"
+      >
+        Close
+      </button>
+    </div>
+  </div>
+
+  <div
+    v-if="showInitialModal"
+    class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+    @click.self="showInitialModal = false"
+  >
+    <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
+      <h2 class="text-xl font-bold text-blue-900 mb-4">Initial Modal</h2>
+      <p>
+        <strong>All items (Packaging + Ingredients + Tools):</strong>
+        Rp {{ formatCurrency(store.initialModalTotal) }}
+      </p>
+      <button
+        @click="showInitialModal = false"
+        class="mt-4 bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600"
+      >
+        Close
+      </button>
+    </div>
+  </div>
+
   <FooterApp />
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useProductStore } from '@/stores/product.js'
 import VueSelectNext from 'vue-select-next'
@@ -324,25 +377,47 @@ import FooterApp from '@/components/global/FooterApp.vue'
 const router = useRouter()
 const store = useProductStore()
 
-// Untuk modal visibility di komponen ini saja
+// Inisialisasi agar ada 1 baris ingredients & packaging (supaya dropdown langsung muncul)
+onMounted(() => {
+  store.addItem('ingredients')
+  store.addItem('packaging')
+})
+
+// Modal visibility
 const showProductionModal = ref(false)
 const showInitialModal = ref(false)
 
-// Untuk input tags (string, nantinya di‐convert ke array sebelum submit)
+// tagsInput
 const tagsInput = ref('')
 
-// Helper format rupiah
+// formatCurrency helper
 function formatCurrency(value) {
-  return value.toLocaleString('id-ID', { minimumFractionDigits: 0 })
+  return Number(value).toLocaleString('id-ID', { minimumFractionDigits: 0 })
 }
 
-// Go back
+// goBack
 function goBack() {
   router.back()
 }
 
-// Submit: panggil action di store, kirim router & tagsInput.value
+// onSubmit
 function onSubmit() {
   store.submitProduct(router, tagsInput.value)
 }
+
+// handleSearch
+function handleSearch(groupKey) {
+  return (searchText, loading) => {
+    store.onSearch(searchText, loading, groupKey)
+  }
+}
+
+// updateItemPrice (dipanggil dari template)
+function updateItemPrice(groupKey, index) {
+  store.updateItemPrice(groupKey, index)
+}
 </script>
+
+<style scoped>
+/* Semua styling di-handle oleh Tailwind; tidak ada CSS tambahan */
+</style>

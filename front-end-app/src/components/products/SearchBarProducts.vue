@@ -5,7 +5,7 @@
         ref="inputRef"
         v-model="search"
         type="text"
-        placeholder="Cari Produk.."
+        :placeholder="store.keyword || 'Cari Produk..'"
         @keyup.enter="onSearch"
         class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-orange-300 pr-10"
       />
@@ -30,7 +30,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { useSearchStore } from '@/stores/search'
 import { useRouter } from 'vue-router'
 
@@ -39,6 +39,15 @@ const inputRef = ref(null)
 
 const store = useSearchStore()
 const router = useRouter()
+
+// Ketika komponen di-mount, cek apakah store.keyword sudah berisi.
+// Jika ada, masukkan ke `search.value` agar tampil di input secara langsung.
+onMounted(() => {
+  if (store.keyword && store.keyword.trim() !== '') {
+    search.value = store.keyword
+    inputRef.value?.focus()
+  }
+})
 
 function onSearch() {
   store.updateKeyword(search.value)
@@ -49,10 +58,15 @@ function onSearch() {
   )
 }
 
-
 function clearSearch() {
   search.value = ''
   store.updateKeyword('')
   inputRef.value?.focus()
 }
+
+watch(search, (newVal) => {
+  if (newVal.trim() === '') {
+    store.updateKeyword('')
+  }
+})
 </script>

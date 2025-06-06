@@ -1,15 +1,15 @@
 <template>
   <AppBar />
 
-  <section class="mt-12 min-h-[100vh]">
-    <div class="mx-auto max-w-5xl">
+  <section class="p-6 py-8 min-h-[100vh]" >
+    <div class="mx-auto max-w-5xl ">
       <h2 class="text-3xl font-semibold text-gray-800 mb-4 text-center">Cari Produk</h2>
       <div class="flex">
         <button
           @click="showFilter = !showFilter"
-          class="flex items-center gap-2 px-4 py-2 border rounded-md m-2 hover:bg-gray-100"
+          class="flex items-center text-white gap-2 px-4 py-2 border bg-blue-500 rounded-md m-2 hover:bg-blue-600"
         >
-          <template v-if="!showFilter">
+          <template v-if="!showFilter" >
             <SlidersHorizontal class="w-5 h-5" />
             <span>Filter</span>
           </template>
@@ -31,9 +31,6 @@
       <IndikatorLoading v-if="loading" :text="'fetch data produk...'" />
       <ErrorMessage v-else-if="error" :text="errorRes" />
       <div v-else>
-      <div v-if="products.length === 0" class="text-center text-gray-500 my-10">
-        Tidak ada produk ditemukan.
-      </div>
 
         <ProductsList :products="products" />
 
@@ -45,6 +42,21 @@
       </div>
     </div>
   </section>
+  <section class="bg-gray-50 py-16 mt-16">
+  <div class="max-w-4xl mx-auto px-4 text-center">
+    <h2 class="text-2xl sm:text-3xl font-semibold text-gray-800 mb-4">
+      Belum menemukan estimasi produk yang cocok?
+    </h2>
+    <p class="text-gray-600 mb-6 text-sm sm:text-base">
+      Tenang, kamu bisa coba buat estimasi produkmu sendiri sesuai kebutuhan dan ide kamu.
+    </p>
+    <router-link to="/products/add" class="inline-block">
+      <button class="bg-orange-600 hover:bg-orange-700 text-white font-medium px-6 py-3 rounded-xl transition duration-300 shadow-md">
+        Buat Estimasi Produk
+      </button>
+    </router-link>
+  </div>
+</section>
 
   <FooterApp />
 </template>

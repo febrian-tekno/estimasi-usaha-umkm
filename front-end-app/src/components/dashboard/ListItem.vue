@@ -26,7 +26,7 @@
           </td>
           <td class="text-left">{{ entry.name }}</td>
           <td>{{ entry.amount }}</td>
-          <td>Rp. {{ entry.price }}</td>
+          <td>Rp. {{ entry.price?.toLocaleString('id-ID') }}</td>
           <td>
             <div class="flex justify-center gap-2">
               <button

@@ -80,7 +80,6 @@ const productSchema = new mongoose.Schema(
     productionYield: Number, // hasilPerProduksi
     dailySalesTarget: Number, // targetPenjualanPerHari
     capital: Number, // totalModalTanpaPeralatan
-    profit: Number, // estimasiKeuntunganPerHari
   },
   { timestamps: true }
 );

@@ -1,6 +1,6 @@
 <template>
   <AppBar />
-  <div class="min-h-screen bg-gray-50 p-6">
+  <div class="min-h-screen bg-gray-50 p-6" style="background-color: #f3ecdc;">
     <div class="max-w-5xl mx-auto">
       <div class="flex justify-between">
         <h1 class="text-3xl font-bold text-gray-800 mb-8">Dashboard</h1>
@@ -71,7 +71,7 @@
             <option value="recent">Terbaru Ditambahkan</option>
           </select>
         </div>
-         <ProductsList :products="sortedProducts" />
+         <ProductsList v-if="sortedProducts" :products="sortedProducts" />
       </div>
 
       <!-- My Estimate Products Section -->
@@ -84,7 +84,7 @@
           </select>
         </div>
 
-        <ProductsList :products="sortedEstimates" />
+        <ProductsList v-if="sortedEstimates" :products="sortedEstimates" />
 
         <!-- Buat Estimasi Produk Button -->
         <div class="w-full flex justify-center mt-4">

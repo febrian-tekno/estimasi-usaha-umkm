@@ -76,7 +76,7 @@ setInterval(
     console.log(`- External    : ${(usage.external / 1024 / 1024).toFixed(2)} MB`);
     console.log('-------------------------------------------');
   },
-  5 * 60 * 1000
+  15 * 60 * 1000
 );
 
 // connect mongodb

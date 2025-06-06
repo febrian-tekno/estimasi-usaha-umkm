@@ -46,9 +46,9 @@
       <table class="table w-full min-w-[700px] text-sm">
         <thead>
           <tr>
-            <th class="text-left">Name</th>
-            <th>Category</th>
-            <th>Views 👁️</th>
+            <th >Image</th>
+            <th >Name</th>
+            <th> Views 👁</th>
             <th>Verified ✅</th>
             <th>Favorite ⭐</th>
             <th>Actions</th>
@@ -56,8 +56,14 @@
         </thead>
         <tbody>
           <tr v-for="product in products" :key="product._id" class="text-center">
-            <td class="text-left">{{ product.title }}</td>
-            <td>{{ product.category }}</td>
+            <td>
+              <img
+                :src="product.image ? baseServerUrl + product.image : ''"
+                alt=""
+                class="m-auto w-16 h-16 object-cover rounded"
+              />
+            </td>
+            <td >{{ product.title }}</td>
             <td>{{ product.views }}</td>
             <td :class="product.isVerified ? 'text-green-600 font-semibold' : 'text-black'">
               {{ product.isVerified ? 'Yes' : 'No' }}
@@ -71,6 +77,21 @@
                 <button class="btn btn-sm btn-ghost text-red-500" @click="deleteProduct(product._id)">
                   <i class="fas fa-trash"></i>
                 </button>
+                <button
+                    v-if="!product.isVerified"
+                    class="btn btn-sm btn-outline text-green-600 mt-1"
+                    @click="verifyProduct(product._id)"
+                    >Verify
+                    <i class="fas fa-check mr-1"></i> 
+                  </button>
+
+                  <button
+                    v-else
+                    class="btn btn-sm btn-outline text-yellow-600 mt-1"
+                    @click="unverifyProduct(product._id)"
+                  >
+                    <i class="fas fa-times mr-1"></i> Unverify
+                  </button>
               </div>
             </td>
           </tr>
@@ -161,6 +182,7 @@ import axios from 'axios'
 import Swal from 'sweetalert2'  
 
 const baseUrl = import.meta.env.VITE_API_BASE_URL
+const baseServerUrl = import.meta.env.VITE_SERVER_BASE_URL
 
 const showIngredientForm = ref(false)
 const showPackingForm = ref(false)

@@ -203,7 +203,7 @@ const googleCallbackHandler = asyncHandler(async (req, res) => {
 
     // Buat userData baru kalau belum ada
     if (!userData) {
-      userData = await userData.create({
+      userData = await User.create({
         username: profile.name,
         email: profile.email,
         is_verified: profile.verified_email,

@@ -2,7 +2,7 @@
   <AppBar />
 
   <div class="m-8">
-    <a @click.prevent="goBack" href="#" class="text-xl hover:underline">← Kembali</a>
+    <a @click.prevent="goBack" href="#" class="text-xl hover:underline">< Kembali</a>
   </div>
   <!-- Detail Produk -->
   <div class="min-h-screen p-4 bg-white max-w-7xl mx-auto flex flex-col lg:flex-row gap-10">
@@ -59,33 +59,54 @@
     </div>
 
     <!-- Detail -->
-    <div class="w-full lg:w-1/2 text-gray-800">
-      <h1 class="text-3xl md:text-4xl font-bold text-orange-600 mb-6">
-        {{ product.title || product.name }}
-      </h1>
+    <div class="w-full lg:w-1/2 text-gray-800" v-if="product.title">
+      <div class="max-w-4xl mx-auto p-6">
+    <!-- Judul dan info dasar produk -->
+    <h1 class="text-3xl md:text-4xl font-bold text-orange-600 mb-6">
+      {{ product.title || product.name }}
+    </h1>
+    <div class="mb-6 space-y-4 text-lg">
+      <p>
+        <span class="font-semibold">Harga Jual: </span>
+        Rp. {{ product.estimatedSellingPrice?.toLocaleString('id-ID') || '-' }}
+      </p>
+      <p>
+        <span class="font-semibold">Hasil per Produksi:</span>
+        {{ product.productionYield || '-' }} unit
+      </p>
 
-      <div class="mb-6 space-y-4 text-lg">
-        <p><span class="font-semibold">Harga Jual:</span> {{ product.estimasiHargaJual?.toLocaleString() || '-' }}</p>
-        <p><span class="font-semibold">Hasil / Produksi:</span> {{ product.hasilPerProduksi || '-' }}</p>
-        <p><span class="font-semibold">Target penjualan / Hari:</span> {{ product.targetPenjualanPerHari || '-' }}</p>
-        <p><span class="font-semibold">Total Modal:</span> Rp {{ product.totalModalTanpaPeralatan?.toLocaleString() || '-' }}</p>
-        <p><span class="font-semibold">Estimasi Untung / Hari:</span> Rp {{ product.estimasiKeuntunganPerHari?.toLocaleString() || '-' }}</p>
-      </div>
-
-      <!-- Langkah Pembuatan -->
-      <section class="mb-6">
-        <h2 class="text-2xl font-semibold mb-3 border-b border-orange-300 pb-1">
-          Langkah Pembuatan
-        </h2>
-        <ol class="list-decimal list-inside space-y-2 text-gray-700">
-          <li v-for="step in product.steps || []" :key="step">{{ step }}</li>
-        </ol>
-      </section>
+      <p>
+        <span class="font-semibold">Modal (per batch):</span>
+        Rp. {{ product.capital?.toLocaleString('id-ID') || '-' }}
+      </p>
+    </div>
+    
+    <h2 class="text-2xl font-semibold mb-3 border-b border-orange-300 pb-1"></h2>
+    <!-- Tampilkan child component untuk statistik -->
+    <ProductStats :product="product" />
+  </div>
     </div>
   </div>
+      
+  <!-- langkah pembuatan, Bahan, Packing, Peralatan -->
+  <div  class="max-w-7xl mx-auto px-4">
+      <section v-if="product.steps?.length" class="mb-6">
+              <h2 class="text-2xl font-semibold mb-3 border-b border-orange-300 pb-1">
+                Langkah Pembuatan
+              </h2>
+              <ol class="list-decimal list-inside space-y-2 text-gray-700">
+                <li v-for="step in product.steps || []" :key="step">{{ step }}</li>
+              </ol>
+      </section>
+      <section v-if="product.tips?.length" class="mb-6">
+         <h2 class="text-2xl font-semibold mb-3 border-b border-orange-300 pb-1">
+                Tips
+          </h2>
+          <ol class="list-decimal list-inside space-y-2 text-gray-700">
+              <li v-for="tip in product.tips || []" :key="tip">{{ tip }}</li>
+          </ol>
+      </section>
 
-  <!-- Bahan, Packing, Peralatan -->
-  <div class="max-w-7xl mx-auto px-4">
     <section v-if="product.ingredients?.length" class="mb-6">
       <h2 class="text-2xl font-semibold mb-4 border-b border-orange-300 pb-1">Bahan</h2>
       <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -153,11 +174,13 @@ import { useAuthStore } from '@/stores/auth'
 
 import axios from 'axios'
 import { useRoute, useRouter } from 'vue-router'
+import ProductStats from '@/components/products/ProductStats.vue'
 
 // --- STATE & REFS ---
 const route = useRoute()
 const router = useRouter()
 const authStore = useAuthStore()
+
 
 const product = ref({})
 const loading = ref(true)
@@ -165,6 +188,10 @@ const error = ref('')
 const isStarred = ref(false)
 const starLoading = ref(false) 
 const userId = ref('')
+const modalIngredients = ref('')
+const modalPackages = ref('')
+const modalTools = ref('')
+
 
 
 const baseServerUrl = import.meta.env.VITE_SERVER_BASE_URL
@@ -185,19 +212,8 @@ async function fetchProduct(id) {
   try {
     const res = await axios.get(`${baseProductsUrl}/${id}`)
     const data = res.data.data
-
-    // Normalisasi data agar sesuai template
-    product.value = {
-      ...data,
-      estimasiHargaJual: data.estimatedSellingPrice,
-      hasilPerProduksi: data.productionYield,
-      targetPenjualanPerHari: data.dailySalesTarget,
-      totalModalTanpaPeralatan: data.capital,
-      estimasiKeuntunganPerHari: data.profit,
-      ingredients: data.ingredients,
-      packaging: data.packaging,
-      tools: data.tools,
-    }
+    product.value = data
+    console.log(product.value);
 
     await checkIfStarred(id)
   } catch (err) {

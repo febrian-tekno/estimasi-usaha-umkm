@@ -80,7 +80,7 @@
             alt="sort"
             class="w-4 h-4"
           />
-          <span>{{ searchStore.sortOrder === 'desc' ? 'Terbaru' : 'Terlama' }}</span>
+          <span>{{ searchStore.sortOrder === 'desc' ? 'Teratas' : 'Terbawah' }}</span>
         </button>
       </div>
 
