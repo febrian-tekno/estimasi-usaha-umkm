@@ -13,6 +13,7 @@
   "dependencies": {
     "axios": "^1.9.0",
     "daisyui": "^5.0.40",
+    "html2pdf.js": "^0.10.3",
     "lucide-vue-next": "^0.511.0",
     "pinia": "^3.0.2",
     "pinia-plugin-persistedstate": "^4.3.0",

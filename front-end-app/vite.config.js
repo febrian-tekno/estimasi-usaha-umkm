@@ -11,6 +11,6 @@ export default defineConfig({
   },
   server: {
     host: true,
-    allowedHosts: ['putrafebrian.online'],
+    allowedHosts: ['putrafebrian.online', 'jualapa.putrafebrian.online'],
   },
 });

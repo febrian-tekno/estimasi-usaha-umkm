@@ -1,3 +1,4 @@
+// src/router/auth.routes.js
 import SignInPage from '../views/auth/LoginPage.vue';
 import RegisterPage from '../views/auth/RegisterPage.vue';
 import VerifyEmailPage from '../views/auth/VerifyEmailPage.vue';

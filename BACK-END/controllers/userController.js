@@ -295,14 +295,14 @@ const removeStarredProduct = asyncHandler(async (req, res, next) => {
 const checkIfProductIsStarred = asyncHandler(async (req, res) => {
   const { id, productId } = req.params;
 
-  const user = await User.findById(id).select('starredProducts');
+  const user = await User.findById(id);
+  console.log(`user checifstarred: ${user}`);
   if (!user) {
     return res.status(404).json({ message: 'User not found' });
   }
+  const isStarred = user?.starred_products?.includes(productId);
 
-  const isStarred = user?.starredProducts?.includes(productId);
-
-  res.json({ status: 'success', message: 'Berhasil mendapat status', data: { isStarred: isStarred } });
+  res.json({ status: 'success', message: 'Berhasil mendapat ', data: { isStarred: isStarred } });
 });
 
 module.exports = {

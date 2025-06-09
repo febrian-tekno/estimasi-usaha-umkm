@@ -1,3 +1,4 @@
+// src/router/index.js
 import { createRouter, createWebHistory } from 'vue-router';
 import HomePage from '@/views/HomePage.vue';
 import notFoundRoutes from './notfound.routes';
@@ -7,7 +8,7 @@ import PrivacyPolicyPage from '@/views/etc/PrivacyPolicyPage.vue';
 import TermsOfServicePage from '@/views/etc/TermsOfServicePage.vue';
 import contactUsPage from '@/views/etc/contactUsPage.vue';
 import AdminDashboardPage from '@/views/dashboard/AdminDashboardPage.vue';
-import UserDashboardPage from '../views/dashboard/UserDashboardPage.vue';
+import UserDashboardPage from '@/views/dashboard/UserDashboardPage.vue';
 import productsRoutes from './products.routes';
 import { useAuthStore } from '@/stores/auth';
 
@@ -53,30 +54,41 @@ const router = createRouter({
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
       return savedPosition;
-    } else {
-      return { top: 0 };
     }
+    return { top: 0 };
   },
 });
 
-// Guard untuk cek login & role
+// Hanya dua path ini yang diblok untuk authenticated user
+const guestOnlyPaths = ['/auth/login', '/auth/register'];
+
 router.beforeEach(async (to, from, next) => {
   const auth = useAuthStore();
+
+  // Jika belum fetch user, coba fetch
   if (!auth.isLogin && !auth.user) {
     try {
       await auth.fetchCurrentUser();
       auth.isLogin = true;
     } catch (err) {
+      // gagal fetch dan butuh auth? redirect ke login
       if (to.meta.requiresAuth) {
-        return next('/login');
+        return next('/auth/login');
       }
     }
   }
 
-  if (to.meta.requiresAuth && !auth.isLogin) {
-    return next('/login');
+  // Jika user sudah login dan mau akses login/register, redirect ke dashboard
+  if (guestOnlyPaths.includes(to.path) && auth.isLogin) {
+    return next('/dashboard');
   }
 
+  // protect routes yang membutuhkan auth
+  if (to.meta.requiresAuth && !auth.isLogin) {
+    return next('/auth/login');
+  }
+
+  // protect routes yang punya role spesifik
   if (to.meta.role && auth.user?.role !== to.meta.role) {
     return next('/unauthorized');
   }
