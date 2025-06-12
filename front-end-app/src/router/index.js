@@ -1,5 +1,6 @@
 // src/router/index.js
 import { createRouter, createWebHistory } from 'vue-router';
+import axios from 'axios';
 import HomePage from '@/views/HomePage.vue';
 import notFoundRoutes from './notfound.routes';
 import authRoutes from './auth.routes';
@@ -63,36 +64,27 @@ const router = createRouter({
 const guestOnlyPaths = ['/auth/login', '/auth/register'];
 
 router.beforeEach(async (to, from, next) => {
+  const baseUrl = import.meta.env.VITE_USER_BASE_URL;
   const auth = useAuthStore();
-
-  // Jika belum fetch user, coba fetch
-  if (!auth.isLogin && !auth.user) {
-    try {
-      await auth.fetchCurrentUser();
-      auth.isLogin = true;
-    } catch (err) {
-      // gagal fetch dan butuh auth? redirect ke login
-      if (to.meta.requiresAuth) {
-        return next('/auth/login');
-      }
-    }
+  try {
+    const res = await axios.get(`${baseUrl}/me`, { withCredentials: true });
+    auth.user = res.data.data;
+  } catch {
+    auth.user = null;
   }
 
-  // Jika user sudah login dan mau akses login/register, redirect ke dashboard
-  if (guestOnlyPaths.includes(to.path) && auth.isLogin) {
+  // kalau sudah login tapi akses login/register → ke dashboard
+  if (auth.user && guestOnlyPaths.includes(to.path)) {
     return next('/dashboard');
   }
-
-  // protect routes yang membutuhkan auth
-  if (to.meta.requiresAuth && !auth.isLogin) {
+  // kalau butuh auth tapi belum login → login
+  if (to.meta.requiresAuth && !auth.user) {
     return next('/auth/login');
   }
-
-  // protect routes yang punya role spesifik
+  // role check
   if (to.meta.role && auth.user?.role !== to.meta.role) {
     return next('/unauthorized');
   }
-
   next();
 });
 

@@ -21,6 +21,7 @@ const router = useRouter()
 const baseUrlAuth = import.meta.env.VITE_AUTH_BASE_URL
 
 async function logOutHandle() {
+  const auth = useAuthStore();
   const result = await Swal.fire({
     title: 'Yakin ingin logout?',
     text: 'Kamu akan keluar dari akun ini.',
@@ -38,11 +39,12 @@ async function logOutHandle() {
     await axios.delete(`${baseUrlAuth}/sessions`, {
       withCredentials: true,
     });
-
+    delete axios.defaults.headers.common.Authorization;
+    
     // Hapus state user di pinia
-    authStore.user = null;
-    authStore.isLogin = false;
-    authStore.isAdmin = false;
+    auth.user = null;
+    auth.isLogin = false;
+    auth.isAdmin = false;
 
     router.push('/')
 

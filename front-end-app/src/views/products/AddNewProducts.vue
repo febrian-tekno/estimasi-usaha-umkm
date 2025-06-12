@@ -10,7 +10,37 @@
       Buat Estimasi Produk
     </h1>
     <div class="flex m-4 gap-2">
-      <p>ini aku</p>
+      <!-- ACTION BUTTONS -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+      <button class="btn btn-secondary text-sm" @click="showIngredientForm = true">➕ Add Ingredient</button>
+      <button class="btn btn-secondary text-sm" @click="showPackingForm = true">➕ Add Packing</button>
+      <button class="btn btn-secondary text-sm" @click="showToolsForm = true">➕ Add Tools</button>
+    </div>
+
+    <!-- MODALS -->
+    <Teleport to="body">
+      <FormModal
+        v-if="showIngredientForm"
+        title="Add Ingredient"
+        :url="`${baseUrl}/v1/ingredients`"
+        @close="showIngredientForm = false"
+        @success="render"
+      />
+      <FormModal
+        v-if="showPackingForm"
+        title="Add Packaging"
+        :url="`${baseUrl}/v1/packages`"
+        @close="showPackingForm = false"
+        @success="render"
+      />
+      <FormModal
+        v-if="showToolsForm"
+        title="Add Tools"
+        :url="`${baseUrl}/v1/tools`"
+        @close="showToolsForm = false"
+        @success="render"
+      />
+    </Teleport>
     </div>
   </div>
 
@@ -373,9 +403,16 @@ import VueSelectNext from 'vue-select-next'
 import '../../../node_modules/vue-select-next/dist/style.css'
 import AppBar from '@/components/global/AppBar.vue'
 import FooterApp from '@/components/global/FooterApp.vue'
+import FormModal from '@/components/dashboard/FormModal.vue'
 
 const router = useRouter()
 const store = useProductStore()
+
+const baseUrl = import.meta.env.VITE_API_BASE_URL
+
+const showIngredientForm = ref(false)
+const showPackingForm = ref(false)
+const showToolsForm = ref(false)
 
 // Inisialisasi agar ada 1 baris ingredients & packaging (supaya dropdown langsung muncul)
 onMounted(() => {
