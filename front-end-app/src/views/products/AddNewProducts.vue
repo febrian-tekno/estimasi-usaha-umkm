@@ -2,7 +2,9 @@
   <AppBar />
 
   <div class="m-8">
-    <a @click.prevent="goBack" href="#" class="text-xl hover:underline">← Kembali</a>
+    <a @click.prevent="goBack" href="#" class="text-xl hover:underline">
+  <i class="fas fa-arrow-left mr-1"></i>Kembali
+</a>
   </div>
 
   <div class="flex justify-between items-center px-6">
