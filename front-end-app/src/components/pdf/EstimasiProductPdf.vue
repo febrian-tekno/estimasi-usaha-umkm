@@ -41,7 +41,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps, defineExpose } from 'vue'
+import { ref, } from 'vue'
 import html2pdf from 'html2pdf.js'
 import SectionList from '@/components/products/SectionList.vue'
 

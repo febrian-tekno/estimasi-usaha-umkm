@@ -5,6 +5,7 @@ import AddNewProducts from '@/views/products/AddNewProducts.vue';
 export default [
   {
     path: '/products/search',
+    name: 'ProductSearch',
     component: ProductsPage,
   },
   {

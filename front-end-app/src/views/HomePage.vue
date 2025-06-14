@@ -154,7 +154,9 @@
         </div>
       </div>
     </section>
-
+    <section>
+      <h2 class="text-center m-24">ini section testimoni</h2>
+    </section>
     <!-- Kenapa Harus JualApa -->
     <section class="bg-orange-50 py-16">
       <div class="max-w-5xl mx-auto px-6 text-center">
@@ -180,7 +182,7 @@
         </div>
       </div>
     </section>
-
+    <ContactWhatsapp/>
     <FooterApp />
   </section>
 </template>
@@ -196,6 +198,7 @@ import ProductsFilter from '@/components/products/ProductsFilter.vue';
 import IndikatorLoading from '@/components/global/IndikatorLoading.vue';
 import ErrorMessage from '@/components/etc/ErrorMessage.vue';
 import ProductsList from '@/components/products/ProductsList.vue';
+import ContactWhatsapp from '@/components/contacts/ContactWhatsapp.vue';
 import { useSearchStore } from '@/stores/search.js';
 
 const searchStore = useSearchStore();

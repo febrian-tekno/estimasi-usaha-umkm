@@ -5,15 +5,21 @@
     <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6">
       <h1 class="text-xl sm:text-2xl font-bold">JualApa Admin Dashboard</h1>
       <LogoutBtn />
+
     </header>
 
+    <h1 class="text-xl sm:text-2xl  font-bold text-orange-500">{{ user?.username || 'username admin' }}</h1>
     <!-- ACTION BUTTONS -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-      <a href="/products/add" class="btn btn-secondary text-sm">➕ Add New Product</a>
-      <button class="btn btn-secondary text-sm" @click="showIngredientForm = true">➕ Add Ingredient</button>
-      <button class="btn btn-secondary text-sm" @click="showPackingForm = true">➕ Add Packing</button>
-      <button class="btn btn-secondary text-sm" @click="showToolsForm = true">➕ Add Tools</button>
-    </div>
+<div class="flex justify-between mt-6 items-start mb-6 flex-wrap gap-3">
+  <a href="/products/add" class="btn btn-secondary text-sm">➕ Add New Product</a>
+  
+  <div class="flex gap-5 flex-wrap pr-12">
+    <button class="btn btn-secondary text-sm" @click="showIngredientForm = true">➕ Add Ingredient</button>
+    <button class="btn btn-secondary text-sm" @click="showPackingForm = true">➕ Add Packing</button>
+    <button class="btn btn-secondary text-sm" @click="showToolsForm = true">➕ Add Tools</button> 
+  </div>
+</div>
+
 
     <!-- MODALS -->
     <Teleport to="body">
