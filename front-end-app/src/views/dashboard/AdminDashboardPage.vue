@@ -10,15 +10,15 @@
 
     <h1 class="text-xl sm:text-2xl  font-bold text-orange-500">{{ user?.username || 'username admin' }}</h1>
     <!-- ACTION BUTTONS -->
-<div class="flex justify-between mt-6 items-start mb-6 flex-wrap gap-3">
-  <a href="/products/add" class="btn btn-secondary text-sm">➕ Add New Product</a>
+    <div class="flex justify-between mt-6 items-start mb-6 flex-wrap gap-3">
+      <a href="/products/add" class="btn btn-secondary text-sm">➕ Add New Product</a>
   
-  <div class="flex gap-5 flex-wrap pr-12">
-    <button class="btn btn-secondary text-sm" @click="showIngredientForm = true">➕ Add Ingredient</button>
-    <button class="btn btn-secondary text-sm" @click="showPackingForm = true">➕ Add Packing</button>
-    <button class="btn btn-secondary text-sm" @click="showToolsForm = true">➕ Add Tools</button> 
-  </div>
-</div>
+      <div class="flex gap-5 flex-wrap pr-12">
+        <button class="btn btn-secondary text-sm" @click="showIngredientForm = true">➕ Add Ingredient</button>
+        <button class="btn btn-secondary text-sm" @click="showPackingForm = true">➕ Add Packing</button>
+        <button class="btn btn-secondary text-sm" @click="showToolsForm = true">➕ Add Tools</button> 
+      </div>
+    </div>
 
 
     <!-- MODALS -->
@@ -84,20 +84,20 @@
                   <i class="fas fa-trash"></i>
                 </button>
                 <button
-                    v-if="!product.isVerified"
-                    class="btn btn-sm btn-outline text-green-600 mt-1"
-                    @click="verifyProduct(product._id)"
-                    >Verify
-                    <i class="fas fa-check mr-1"></i> 
-                  </button>
+                  v-if="!product.isVerified"
+                  class="btn btn-sm btn-outline text-green-600 mt-1"
+                  @click="verifyProduct(product._id)"
+                >Verify
+                  <i class="fas fa-check mr-1"></i> 
+                </button>
 
-                  <button
-                    v-else
-                    class="btn btn-sm btn-outline text-yellow-600 mt-1"
-                    @click="unverifyProduct(product._id)"
-                  >
-                    <i class="fas fa-times mr-1"></i> Unverify
-                  </button>
+                <button
+                  v-else
+                  class="btn btn-sm btn-outline text-yellow-600 mt-1"
+                  @click="unverifyProduct(product._id)"
+                >
+                  <i class="fas fa-times mr-1"></i> Unverify
+                </button>
               </div>
             </td>
           </tr>

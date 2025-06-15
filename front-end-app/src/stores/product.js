@@ -109,15 +109,15 @@ export const useProductStore = defineStore('product', () => {
   async function fetchOptions(groupKey) {
     let url = '';
     switch (groupKey) {
-      case 'ingredients':
-        url = `${apiUrl}/api/v1/ingredients`;
-        break;
-      case 'packaging':
-        url = `${apiUrl}/api/v1/packages`;
-        break;
-      case 'tools':
-        url = `${apiUrl}/api/v1/tools`;
-        break;
+    case 'ingredients':
+      url = `${apiUrl}/api/v1/ingredients`;
+      break;
+    case 'packaging':
+      url = `${apiUrl}/api/v1/packages`;
+      break;
+    case 'tools':
+      url = `${apiUrl}/api/v1/tools`;
+      break;
     }
     if (!url) return;
 

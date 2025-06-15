@@ -3,8 +3,8 @@
 
   <div class="m-8">
     <a @click.prevent="goBack" href="#" class="text-xl hover:underline">
-  <i class="fas fa-arrow-left mr-1"></i>Kembali
-</a>
+      <i class="fas fa-arrow-left mr-1"></i>Kembali
+    </a>
   </div>
 
   <div class="flex justify-between items-center px-6">
@@ -13,36 +13,36 @@
     </h1>
     <div class="flex m-4 gap-2">
       <!-- ACTION BUTTONS -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-      <button class="btn btn-secondary text-sm" @click="showIngredientForm = true">➕ Add Ingredient</button>
-      <button class="btn btn-secondary text-sm" @click="showPackingForm = true">➕ Add Packing</button>
-      <button class="btn btn-secondary text-sm" @click="showToolsForm = true">➕ Add Tools</button>
-    </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+        <button class="btn btn-secondary text-sm" @click="showIngredientForm = true">➕ Add Ingredient</button>
+        <button class="btn btn-secondary text-sm" @click="showPackingForm = true">➕ Add Packing</button>
+        <button class="btn btn-secondary text-sm" @click="showToolsForm = true">➕ Add Tools</button>
+      </div>
 
-    <!-- MODALS -->
-    <Teleport to="body">
-      <FormModal
-        v-if="showIngredientForm"
-        title="Add Ingredient"
-        :url="`${baseUrl}/v1/ingredients`"
-        @close="showIngredientForm = false"
-        @success="render"
-      />
-      <FormModal
-        v-if="showPackingForm"
-        title="Add Packaging"
-        :url="`${baseUrl}/v1/packages`"
-        @close="showPackingForm = false"
-        @success="render"
-      />
-      <FormModal
-        v-if="showToolsForm"
-        title="Add Tools"
-        :url="`${baseUrl}/v1/tools`"
-        @close="showToolsForm = false"
-        @success="render"
-      />
-    </Teleport>
+      <!-- MODALS -->
+      <Teleport to="body">
+        <FormModal
+          v-if="showIngredientForm"
+          title="Add Ingredient"
+          :url="`${baseUrl}/v1/ingredients`"
+          @close="showIngredientForm = false"
+          @success="render"
+        />
+        <FormModal
+          v-if="showPackingForm"
+          title="Add Packaging"
+          :url="`${baseUrl}/v1/packages`"
+          @close="showPackingForm = false"
+          @success="render"
+        />
+        <FormModal
+          v-if="showToolsForm"
+          title="Add Tools"
+          :url="`${baseUrl}/v1/tools`"
+          @close="showToolsForm = false"
+          @success="render"
+        />
+      </Teleport>
     </div>
   </div>
 

@@ -7,8 +7,8 @@
 
         <div>
           <a v-if="user && user.role === 'admin'"
-            href="/dashboard/admin"
-            class="m-4 px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 transition"
+             href="/dashboard/admin"
+             class="m-4 px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 transition"
           >
             Dashboard Admin
           </a>
@@ -19,7 +19,7 @@
 
       <!-- Profile Section -->
       <div class="bg-white p-6 rounded-lg shadow flex flex-col items-center gap-4 mb-10">
-          <div
+        <div
           class="relative w-40 h-40 rounded-full overflow-hidden cursor-pointer"
           @mouseenter="hover = true"
           @mouseleave="hover = false"
@@ -71,7 +71,7 @@
             <option value="recent">Terbaru Ditambahkan</option>
           </select>
         </div>
-         <ProductsList v-if="sortedProducts" :products="sortedProducts" />
+        <ProductsList v-if="sortedProducts" :products="sortedProducts" />
       </div>
 
       <!-- My Estimate Products Section -->

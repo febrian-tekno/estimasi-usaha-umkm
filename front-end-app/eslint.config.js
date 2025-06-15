@@ -16,7 +16,11 @@ export default defineConfig([
         ...globals.node,
       },
     },
+    rules: {
+      indent: ['error', 2], // ✅ ini untuk script section di .vue dan js
+    },
   },
+
   // Vue specific rules
   ...pluginVue.configs['flat/essential'].map((config) => ({
     ...config,
@@ -25,8 +29,15 @@ export default defineConfig([
     rules: {
       ...(config.rules || {}),
       'vue/multi-word-component-names': 'warn',
+      'vue/html-indent': ['error', 2, {
+        baseIndent: 1,
+        alignAttributesVertically: true,
+        attributeIndent: 1,
+      }],
     },
+
   })),
+
   // CSS rules
   {
     files: ['**/*.css'],
@@ -34,6 +45,7 @@ export default defineConfig([
     language: 'css/css',
     extends: ['css/recommended'],
   },
+
   // Ignore assets
   {
     ignores: ['src/assets/**/*'],

@@ -1,6 +1,6 @@
 <template>
   <AppBar/>
-<div class="max-w-4xl mx-auto px-4 py-10 text-gray-800">
+  <div class="max-w-4xl mx-auto px-4 py-10 text-gray-800">
     <h1 class="text-4xl font-bold mb-4">Kebijakan Privasi – JualApa</h1>
     <p class="mb-8 text-sm text-gray-500">Terakhir diperbarui: 28 Mei 2025</p>
 

@@ -1,34 +1,25 @@
 <template>
   <AppBar />
-<section class="bg-blue-200 py-6 px-4 text-center">
-  <div class="max-w-2xl mt-8 mx-auto">
-    <h1 class="text-5xl font-bold text-gray-800 mb-4">Hubungi Kami</h1>
-    <p class="text-gray-600 mb-6">
-      Kami siap membantu Anda. Kirim pertanyaan, masukan, atau permintaan melalui saluran di bawah ini.
-    </p>
-    <button
-      @click="chatWhatsApp"
-      class="bg-green-500 text-white font-semibold px-6 py-3 rounded-lg shadow-md hover:bg-green-700 transition"
-    >
-      Hubungi Kami Sekarang
-    </button>
-  </div>
-</section>
+  <section class="bg-blue-200 py-6 px-4 text-center">
+    <div class="max-w-2xl mt-8 mx-auto">
+      <h1 class="text-5xl font-bold text-gray-800 mb-4">Hubungi Kami</h1>
+      <p class="text-gray-600 mb-6">
+        Kami siap membantu Anda. Kirim pertanyaan, masukan, atau permintaan melalui saluran di bawah ini.
+      </p>
+      <button @click="chatWhatsApp"
+              class="bg-green-500 text-white font-semibold px-6 py-3 rounded-lg shadow-md hover:bg-green-700 transition">
+        Hubungi Kami Sekarang
+      </button>
+    </div>
+  </section>
 
-<div class="w-full overflow-hidden -mt-1">
-  <svg
-    class="w-full h-16 md:h-24 text-blue-200"
-    preserveAspectRatio="none"
-    viewBox="0 0 1440 320"
-    fill="currentColor"
-    xmlns="http://www.w3.org/2000/svg"
-    style="transform: rotate(180deg);"
-  >
-    <path
-      d="M0,224L48,197.3C96,171,192,117,288,112C384,107,480,149,576,160C672,171,768,149,864,144C960,139,1056,149,1152,144C1248,139,1344,117,1392,106.7L1440,96L1440,320L0,320Z"
-    />
-  </svg>
-</div>
+  <div class="w-full overflow-hidden -mt-1">
+    <svg class="w-full h-16 md:h-24 text-blue-200" preserveAspectRatio="none" viewBox="0 0 1440 320" fill="currentColor"
+         xmlns="http://www.w3.org/2000/svg" style="transform: rotate(180deg);">
+      <path
+        d="M0,224L48,197.3C96,171,192,117,288,112C384,107,480,149,576,160C672,171,768,149,864,144C960,139,1056,149,1152,144C1248,139,1344,117,1392,106.7L1440,96L1440,320L0,320Z" />
+    </svg>
+  </div>
 
 
   <!-- Kontak Section -->
@@ -48,6 +39,7 @@
 </template>
 
 <script setup>
+/* eslint-disable no-unused-vars */
 import AppBar from '@/components/global/AppBar.vue'
 import FooterApp from '@/components/global/FooterApp.vue'
 import { defineComponent, h } from 'vue'
@@ -80,7 +72,7 @@ const ContactItem = defineComponent({
 })
 
 function chatWhatsApp() {
-  const phoneNumber = '6281234567890'; 
+  const phoneNumber = '6281234567890';
   const message = encodeURIComponent('Halo, saya ingin mengetahui lebih lanjut mengenai jualApa, mohon informasinya.');
   const url = `https://wa.me/${phoneNumber}?text=${message}`;
   window.open(url, '_blank');

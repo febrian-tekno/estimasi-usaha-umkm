@@ -22,7 +22,7 @@
       </button>
 
       <!-- Logo -->
-       <AppLogo  v-if="!isMobileSearchActive" />
+      <AppLogo  v-if="!isMobileSearchActive" />
 
       <!-- Desktop menu -->
       <div class="hidden md:flex space-x-4">
@@ -166,7 +166,7 @@ function showMobileSearch() {
 
 
 function handleSearch() {
-    if (!searchKeyword.value.trim()) return;
+  if (!searchKeyword.value.trim()) return;
   search.updateKeyword(searchKeyword.value)
   router.push(`/products/search?q=${encodeURIComponent(searchKeyword.value)}`)
 }

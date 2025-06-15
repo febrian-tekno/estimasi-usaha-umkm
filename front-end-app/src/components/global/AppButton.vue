@@ -43,16 +43,16 @@ const isDisabled = computed(() => props.loading || props.disabled);
 // Warna tombol berdasarkan prop
 const colorClass = computed(() => {
   switch (props.color) {
-    case 'green':
-      return 'bg-green-500 hover:bg-green-600';
-    case 'blue':
-      return 'bg-blue-500 hover:bg-blue-600';
-    case 'gray':
-      return 'bg-gray-500 hover:bg-gray-600';
-    case 'yellow':
-      return 'bg-yellow-500 hover:bg-yellow-600';
-    default:
-      return 'bg-black hover:bg-gray-800';
+  case 'green':
+    return 'bg-green-500 hover:bg-green-600';
+  case 'blue':
+    return 'bg-blue-500 hover:bg-blue-600';
+  case 'gray':
+    return 'bg-gray-500 hover:bg-gray-600';
+  case 'yellow':
+    return 'bg-yellow-500 hover:bg-yellow-600';
+  default:
+    return 'bg-black hover:bg-gray-800';
   }
 });
 

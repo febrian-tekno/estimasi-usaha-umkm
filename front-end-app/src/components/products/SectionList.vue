@@ -10,6 +10,7 @@
 </template>
 
 <script setup>
+/* eslint-disable no-unused-vars */
 const props = defineProps({
   title: String,
   items: Array

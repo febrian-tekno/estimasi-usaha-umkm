@@ -3,8 +3,8 @@
     <div class="bg-white/80 p-5 rounded-xl shadow-xl w-full max-w-5xl flex overflow-hidden">
       <SideBanner></SideBanner>
       <div class="w-full md:w-1/2 p-10 flex flex-col justify-center space-y-6">
-         <a href="/" class="text-sm text-gray-600 hover:underline">← Kembali ke Beranda</a>
-         <AppLogo/>
+        <a href="/" class="text-sm text-gray-600 hover:underline">← Kembali ke Beranda</a>
+        <AppLogo/>
         <h2 class="text-3xl font-bold">WELCOME BACK!</h2>
         <p class="text-gray-500 text-sm">Please enter log in details below</p>
 

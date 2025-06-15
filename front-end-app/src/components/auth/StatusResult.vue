@@ -1,10 +1,6 @@
 <template>
   <div class="text-center space-y-3">
-    <img
-      :src="status === 'success' ? successIcon : failedIcon"
-      alt="Status Icon"
-      class="mx-auto w-24 md:w-28"
-    />
+    <img :src="status === 'success' ? successIcon : failedIcon" alt="Status Icon" class="mx-auto w-24 md:w-28" />
     <h2 :class="['text-2xl font-bold', status === 'success' ? 'text-green-600' : 'text-red-600']">
       {{ title }}
     </h2>
@@ -16,6 +12,7 @@
 </template>
 
 <script setup>
+// eslint-disable-next-line no-unused-vars
 const props = defineProps({
   status: { type: String, required: true }, // 'success' atau 'failed'
   title: { type: String, required: true },

@@ -1,24 +1,14 @@
 <template>
   <div>
     <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 m-4 lg:grid-cols-4 gap-4" v-if="products.length">
-      <div
-        v-for="product in products"
-        :key="product._id"
-        @click="goToDetail(product._id)"
-        class="cursor-pointer bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition duration-300"
-      >
-         <!-- Gambar dan badge verifikasi -->
+      <div v-for="product in products" :key="product._id" @click="goToDetail(product._id)"
+           class="cursor-pointer bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition duration-300">
+        <!-- Gambar dan badge verifikasi -->
         <div class="relative">
-          <img
-            :src="baseServerUrl + product.image"
-            alt="Produk"
-            class="w-full h-40 sm:h-48 object-cover"
-          />
+          <img :src="baseServerUrl + product.image" alt="Produk" class="w-full h-40 sm:h-48 object-cover" />
 
-          <span
-            v-if="product.isVerified"
-            class="absolute top-2 left-2 bg-white bg-opacity-80 text-green-600 font-medium text-xs px-2 py-1 rounded flex items-center gap-1 shadow-sm"
-          >
+          <span v-if="product.isVerified"
+                class="absolute top-2 left-2 bg-white bg-opacity-80 text-green-600 font-medium text-xs px-2 py-1 rounded flex items-center gap-1 shadow-sm">
             <i class="fa fa-check-circle"></i> Terverifikasi Ahli
           </span>
         </div>
@@ -27,12 +17,12 @@
           <h3 class="text-base sm:text-lg font-semibold text-gray-800 mb-1 truncate">
             {{ product.title }}
           </h3>
-  
+
           <p class="text-sm text-gray-500">
-           <span class="font-bold text-black ">Modal: </span> Rp {{ product.capital?.toLocaleString('id-ID') }}
+            <span class="font-bold text-black ">Modal: </span> Rp {{ product.capital?.toLocaleString('id-ID') }}
           </p>
 
-          <div class="flex flex-wrap items-center justify-between gap-1 mt-3 text-xs sm:text-sm text-gray-500"  >
+          <div class="flex flex-wrap items-center justify-between gap-1 mt-3 text-xs sm:text-sm text-gray-500">
             <span class="flex items-center gap-1">
               <i class="fa fa-star text-yellow-400"></i> {{ product.stars }}
             </span>
@@ -52,6 +42,7 @@
 </template>
 
 <script setup>
+/* eslint-disable no-unused-vars */
 import { useRouter } from 'vue-router'
 const baseServerUrl = import.meta.env.VITE_SERVER_BASE_URL;
 

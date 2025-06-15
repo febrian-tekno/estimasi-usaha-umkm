@@ -43,20 +43,20 @@
     </div>
   </section>
   <section class="bg-gray-50 py-16 mt-16">
-  <div class="max-w-4xl mx-auto px-4 text-center">
-    <h2 class="text-2xl sm:text-3xl font-semibold text-gray-800 mb-4">
-      Belum menemukan estimasi produk yang cocok?
-    </h2>
-    <p class="text-gray-600 mb-6 text-sm sm:text-base">
-      Tenang, kamu bisa coba buat estimasi produkmu sendiri sesuai kebutuhan dan ide kamu.
-    </p>
-    <router-link to="/products/add" class="inline-block">
-      <button class="bg-orange-600 hover:bg-orange-700 text-white font-medium px-6 py-3 rounded-xl transition duration-300 shadow-md">
-        Buat Estimasi Produk
-      </button>
-    </router-link>
-  </div>
-</section>
+    <div class="max-w-4xl mx-auto px-4 text-center">
+      <h2 class="text-2xl sm:text-3xl font-semibold text-gray-800 mb-4">
+        Belum menemukan estimasi produk yang cocok?
+      </h2>
+      <p class="text-gray-600 mb-6 text-sm sm:text-base">
+        Tenang, kamu bisa coba buat estimasi produkmu sendiri sesuai kebutuhan dan ide kamu.
+      </p>
+      <router-link to="/products/add" class="inline-block">
+        <button class="bg-orange-600 hover:bg-orange-700 text-white font-medium px-6 py-3 rounded-xl transition duration-300 shadow-md">
+          Buat Estimasi Produk
+        </button>
+      </router-link>
+    </div>
+  </section>
 
   <FooterApp />
 </template>

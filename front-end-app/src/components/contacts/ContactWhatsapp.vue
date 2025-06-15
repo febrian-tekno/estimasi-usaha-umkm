@@ -2,12 +2,12 @@
   <transition name="fade-scale" appear>
     <div
       v-if="show"
-      class="fixed bottom-10 right-10 z-50"
+      class="fixed bottom-4 right-4 z-50 sm:right-6 sm:bottom-6 md:right-10 md:bottom-10"
     >
       <div class="relative">
         <button
           @click="handleClose"
-          class="absolute -top-5 -right-5 text-black rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-gray-300 transition"
+          class="absolute -top-4 -right-4 text-black bg-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-gray-300 transition"
           aria-label="Tutup"
         >
           ✕
@@ -16,12 +16,12 @@
         <!-- Tombol WhatsApp -->
         <button
           @click="openWhatsapp"
-          class="flex items-center gap-2 bg-green-600 rounded-xl p-4 text-white font-medium hover:bg-green-700 transition-colors duration-200 shadow-md"
+          class="flex items-center gap-2 bg-green-600 rounded-xl px-4 py-3 text-sm md:text-base text-white font-medium hover:bg-green-700 transition-colors duration-200 shadow-md max-w-xs"
         >
           <img
             src="https://images.icon-icons.com/622/PNG/512/whatsapp-logo_icon-icons.com_57054.png"
             alt="WhatsApp"
-            class="h-6"
+            class="h-5 w-5 md:h-6 md:w-6"
           />
           <span>Hubungi kami</span>
         </button>
@@ -31,7 +31,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, } from 'vue'
 
 const show = ref(false)
 let timer = null
@@ -56,15 +56,12 @@ function openWhatsapp() {
 function handleClose() {
   show.value = false
 
-  // Bersihkan timer sebelumnya kalau ada
   if (timer) clearTimeout(timer)
 
-  // Setel muncul ulang setelah 5 menit
   timer = setTimeout(() => {
     show.value = true
   }, 5 * 60 * 1000)
 }
-
 </script>
 
 <style scoped>
